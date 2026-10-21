@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Mountain,
   Menu,
   X,
   MapPin,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/authContext";
+import Image from "next/image";
 
 const PUBLIC_NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -46,8 +46,8 @@ export function Navbar() {
           onClick={handleLinkClick}
           className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#247343] rounded-lg p-1"
         >
-          <div className="w-9 h-9 rounded-lg bg-[#F3F5F3] border border-[#E1E6E1] flex items-center justify-center text-[#247343] group-hover:bg-[#247343] group-hover:text-white transition-colors">
-            <Mountain className="w-5 h-5 stroke-[2.2]" />
+          <div className="w-9 h-9 rounded-lg bg-[#F3F5F3] border border-[#E1E6E1] flex items-center justify-center overflow-hidden transition-colors">
+            <Image src="/logo.png" alt="" width={36} height={36} className="h-full w-full object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold tracking-tight text-[#202923] flex items-center">

@@ -68,7 +68,7 @@ export function MapControls({
   return (
     <>
       {/* Top Left: Search & Layer Toggles */}
-      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 max-w-sm w-[92%] sm:w-88 pointer-events-auto">
+      <div className="map-ui-layer absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-col gap-2 max-w-sm w-[calc(100%-1.5rem)] sm:w-88 pointer-events-auto">
         {/* Search Bar */}
         <div className="relative">
           <div className="bg-white rounded-lg shadow-md flex items-center px-3.5 py-2.5 border border-[#E1E6E1] focus-within:border-[#247343] focus-within:ring-2 focus-within:ring-[#247343]/20 transition-all">

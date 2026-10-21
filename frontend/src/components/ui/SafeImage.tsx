@@ -48,6 +48,7 @@ export function SafeImage({
       <Image
         src={src}
         alt={alt}
+        unoptimized
         className={cn(
           "transition-opacity duration-700",
           isLoading ? "opacity-0" : "opacity-100",

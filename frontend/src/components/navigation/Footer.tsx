@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Mountain, Phone, AlertCircle, CheckSquare } from "lucide-react";
+import { Phone, AlertCircle, CheckSquare } from "lucide-react";
+import Image from "next/image";
 import { PublicChecklistModal } from "@/components/ui/PublicChecklistModal";
 
 export function Footer() {
@@ -16,8 +17,8 @@ export function Footer() {
             {/* Column 1: Brand & Purpose */}
             <div className="lg:col-span-2 space-y-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-white border border-[#E1E6E1] flex items-center justify-center text-[#247343]">
-                  <Mountain className="w-5 h-5 stroke-[2.2]" />
+                <div className="w-8 h-8 rounded-lg bg-white border border-[#E1E6E1] flex items-center justify-center overflow-hidden">
+                  <Image src="/logo.png" alt="" width={32} height={32} className="h-full w-full object-contain" />
                 </div>
                 <span className="text-xl font-bold tracking-tight text-[#202923]">
                   Giri<span className="text-[#247343]">Raksha</span>

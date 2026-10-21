@@ -169,14 +169,14 @@ function MapPageContent() {
   }, [searchQuery]);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-white">
+    <div className="flex flex-col min-h-screen h-[100dvh] overflow-hidden bg-white">
       <DemoBanner />
       <Navbar />
 
       {/* Main Map + Panel Container */}
-      <main className="flex-1 flex flex-col lg:flex-row relative overflow-hidden">
+      <main className="flex-1 flex flex-col lg:flex-row relative overflow-y-auto lg:overflow-hidden">
         {/* Left: Map Area (70% on desktop, 55vh on mobile) */}
-        <div className="relative w-full lg:w-[68%] xl:w-[72%] h-[55vh] lg:h-full bg-[#F3F5F3] overflow-hidden flex flex-col">
+        <div className="relative w-full lg:w-[68%] xl:w-[72%] h-[56dvh] min-h-[360px] lg:h-full shrink-0 bg-[#F3F5F3] overflow-hidden flex flex-col">
           {/* Controls Overlay */}
           <MapControls
             searchQuery={searchQuery}
@@ -191,7 +191,7 @@ function MapPageContent() {
           />
 
           {/* Fallback Switcher Pill */}
-          <div className="absolute bottom-4 right-14 z-20 hidden md:block">
+          <div className="map-ui-layer absolute bottom-4 right-14 hidden md:block">
             <button
               onClick={() => setUseFallbackMap(!useFallbackMap)}
               className="text-[10px] px-2.5 py-1 rounded bg-white hover:bg-[#F3F5F3] text-[#526056] border border-[#E1E6E1] shadow-sm transition-colors"
@@ -222,7 +222,7 @@ function MapPageContent() {
         </div>
 
         {/* Right: Public Location Summary Panel */}
-        <aside className="w-full lg:w-[32%] xl:w-[28%] h-[45vh] lg:h-full shrink-0 z-20 bg-white">
+        <aside className="w-full lg:w-[32%] xl:w-[28%] h-[44dvh] min-h-[300px] lg:h-full shrink-0 z-20 bg-white">
           <LocationPanel location={selectedLocation} />
         </aside>
       </main>
