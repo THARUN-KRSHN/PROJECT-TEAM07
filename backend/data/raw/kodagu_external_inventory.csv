@@ -1,0 +1,46 @@
+inventory_id,event_year,latitude,longitude,landslide_type,area_sq_m,inventory_source,note
+SYN-KODAGU-001,2018,12.853651,75.721145,Unknown,1907.7,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-002,2018,12.187469,75.460564,Debris flow,6629.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-003,2018,12.506423,75.762516,Unknown,147.4,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-004,2018,12.855457,75.63453,Unknown,3457.4,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-005,2018,12.918562,75.692437,Unknown,1252.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-006,2018,12.113857,75.546662,Earth slide,662.8,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-007,2018,13.022395,75.992956,Debris flow,2618.1,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-008,2018,12.868767,75.873968,Debris flow,6975.8,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-009,2018,12.407154,75.643777,Unknown,5670.6,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-010,2018,12.916563,75.898476,Debris flow,1558.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-011,2018,12.873959,75.843437,Rock fall,4737.7,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-012,2018,12.721069,76.116377,Earth slide,4697.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-013,2018,12.670177,76.260386,Unknown,1642.4,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-014,2018,12.881644,75.517603,Rock fall,843.5,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-015,2018,13.199112,76.195522,Rock fall,899.0,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-016,2018,12.694263,76.034317,Unknown,4544.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-017,2018,12.970461,76.023298,Unknown,1726.1,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-018,2018,12.893128,75.736871,Earth slide,572.0,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-019,2018,13.02697,75.709517,Rock fall,283.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-020,2018,13.14543,75.405076,Rock fall,4514.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-021,2018,12.2317,76.283984,Unknown,990.8,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-022,2018,12.198552,75.945855,Earth slide,2600.4,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-023,2018,12.703622,75.762096,Earth slide,7070.4,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-024,2018,12.539154,75.889392,Unknown,428.5,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-025,2018,12.684867,75.436474,Unknown,1720.5,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-026,2018,12.957651,75.556286,Rock fall,1498.5,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-027,2018,13.118057,75.961024,Debris flow,2745.5,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-028,2018,12.500899,75.862836,Earth slide,7066.2,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-029,2018,12.861519,76.108367,Earth slide,418.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-030,2018,12.236159,75.992868,Rock fall,3383.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-031,2018,12.641462,75.941292,Rock fall,5623.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-032,2018,12.026166,76.133739,Unknown,1472.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-033,2018,12.604501,75.461437,Debris flow,1554.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-034,2018,12.654404,76.021798,Earth slide,2864.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-035,2018,12.882534,76.044032,Rock fall,2642.0,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-036,2018,12.779382,75.647647,Unknown,3430.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-037,2018,12.430076,75.576085,Debris flow,3352.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-038,2018,12.006877,75.592467,Unknown,613.9,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-039,2018,12.138583,75.578327,Debris flow,5373.8,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-040,2018,13.167673,75.871404,Debris flow,6525.4,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-041,2018,13.1068,75.522064,Unknown,2218.7,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-042,2018,12.390112,75.993357,Unknown,349.5,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-043,2018,12.310624,75.49457,Unknown,1593.6,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-044,2018,12.5237,75.424201,Rock fall,2239.1,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory
+SYN-KODAGU-045,2018,12.827928,75.687361,Rock fall,513.3,SYNTHETIC_NOT_REAL_KODAGU_INVENTORY,Synthetic illustration; not the published inventory

@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, Suspense, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { MOCK_LOCATIONS, LocationData } from "@/data/mockLocations";
+import { LocationData } from "@/data/mockLocations";
+import { getModelLocations, toLocationData } from "@/lib/model";
 import { MapControls } from "@/components/map/MapControls";
 import { LocationPanel } from "@/components/map/LocationPanel";
 import { MapFallback } from "@/components/map/MapFallback";
@@ -32,15 +33,9 @@ function MapPageContent() {
   const initialLocId = searchParams.get("location");
   const initialQuery = searchParams.get("q") || "";
 
-  const defaultLocation = useMemo(() => {
-    if (initialLocId) {
-      const match = MOCK_LOCATIONS.find((l) => l.id === initialLocId);
-      if (match) return match;
-    }
-    return MOCK_LOCATIONS[0]; // Meppadi
-  }, [initialLocId]);
-
-  const [selectedLocation, setSelectedLocation] = useState<LocationData>(defaultLocation);
+  const [locations, setLocations] = useState<LocationData[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [baseMapType, setBaseMapType] = useState<"terrain" | "satellite" | "osm">("terrain");
   const [useFallbackMap, setUseFallbackMap] = useState(false);
@@ -50,6 +45,18 @@ function MapPageContent() {
     rainfall: true,
     settlements: true,
   });
+
+  useEffect(() => {
+    getModelLocations()
+      .then((response) => {
+        const loaded = response.locations.map(toLocationData);
+        setLocations(loaded);
+        setSelectedLocation(
+          loaded.find((location) => location.id === initialLocId) || loaded[0] || null
+        );
+      })
+      .catch((error: Error) => setLoadError(error.message));
+  }, [initialLocId]);
 
   const handleToggleLayer = (
     layerKey: "risk" | "historical" | "rainfall" | "settlements"
@@ -158,15 +165,22 @@ function MapPageContent() {
   };
 
   const filteredLocations = useMemo(() => {
-    if (!searchQuery.trim()) return MOCK_LOCATIONS;
+    if (!searchQuery.trim()) return locations;
     const q = searchQuery.toLowerCase();
-    return MOCK_LOCATIONS.filter(
+    return locations.filter(
       (loc) =>
         loc.name.toLowerCase().includes(q) ||
         loc.district.toLowerCase().includes(q) ||
         loc.panchayat.toLowerCase().includes(q)
     );
-  }, [searchQuery]);
+  }, [locations, searchQuery]);
+
+  if (loadError) {
+    return <div className="p-8 text-red-700">Unable to load backend model data: {loadError}</div>;
+  }
+  if (!selectedLocation) {
+    return <div className="p-8 text-[#526056]">Loading backend model data...</div>;
+  }
 
   return (
     <div className="flex flex-col min-h-screen h-[100dvh] overflow-hidden bg-white">
@@ -205,13 +219,13 @@ function MapPageContent() {
           <div className="flex-1 w-full h-full relative">
             {useFallbackMap ? (
               <MapFallback
-                locations={MOCK_LOCATIONS}
+                locations={locations}
                 selectedLocation={selectedLocation}
                 onSelectLocation={setSelectedLocation}
               />
             ) : (
               <DynamicRiskMapLeaflet
-                locations={MOCK_LOCATIONS}
+                locations={locations}
                 selectedLocation={selectedLocation}
                 onSelectLocation={setSelectedLocation}
                 activeLayers={activeLayers}

@@ -1,0 +1,16 @@
+admin_id,district,local_body_name,local_body_type,centroid_latitude,centroid_longitude,area_sqkm,geometry_source,note
+SYN-ADMIN-001,Idukki,Demo Panchayat 1,Block Panchayat,11.507358,76.104976,106.19,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-002,Wayanad,Demo Panchayat 2,Grama Panchayat,11.349456,75.876802,45.54,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-003,Idukki,Demo Panchayat 3,Block Panchayat,10.647932,76.849504,119.76,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-004,Pathanamthitta,Demo Panchayat 4,Grama Panchayat,11.014097,76.401271,48.3,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-005,Palakkad,Demo Panchayat 5,Grama Panchayat,10.770241,76.514936,63.18,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-006,Pathanamthitta,Demo Panchayat 6,Grama Panchayat,10.599378,76.337619,104.38,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-007,Idukki,Demo Panchayat 7,Grama Panchayat,10.217417,76.66784,46.98,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-008,Pathanamthitta,Demo Panchayat 8,Block Panchayat,10.777085,76.775656,62.31,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-009,Idukki,Demo Panchayat 9,Grama Panchayat,10.635398,76.159253,84.89,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-010,Palakkad,Demo Panchayat 10,Municipality,11.172234,76.52803,28.7,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-011,Pathanamthitta,Demo Panchayat 11,Municipality,10.305913,75.975865,59.35,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-012,Idukki,Demo Panchayat 12,Block Panchayat,10.659883,76.482226,47.49,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-013,Pathanamthitta,Demo Panchayat 13,Municipality,10.276108,76.178987,86.06,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-014,Palakkad,Demo Panchayat 14,Municipality,11.29041,75.708138,29.28,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis
+SYN-ADMIN-015,Palakkad,Demo Panchayat 15,Block Panchayat,11.165922,76.846633,39.44,SYNTHETIC_NOT_REAL_LSG_BOUNDARY,Use actual boundary polygons for spatial analysis

@@ -1,0 +1,121 @@
+event_id,event_date,latitude,longitude,country,state_region,district,trigger,landslide_type,fatalities,injuries,source_name,source_record_id,location_accuracy
+SYN-NASA-0001,2020-04-20,11.515725,76.400918,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Unknown,Debris flow,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0001,Unknown
+SYN-NASA-0002,2024-08-18,10.946093,76.479816,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Unknown,Unknown,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0002,Moderate
+SYN-NASA-0003,2020-01-02,11.659616,75.801333,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Unknown,Unknown,3,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0003,Unknown
+SYN-NASA-0004,2024-05-15,11.385526,76.198969,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Debris flow,2,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0004,Moderate
+SYN-NASA-0005,2021-09-13,10.360101,75.749937,India,Kerala / Western Ghats (illustrative),Idukki,Human activity,Mudslide,1,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0005,Approximate
+SYN-NASA-0006,2019-11-11,11.858558,76.292789,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Debris flow,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0006,Approximate
+SYN-NASA-0007,2020-09-02,11.493937,76.095833,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Mudslide,1,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0007,Unknown
+SYN-NASA-0008,2022-03-30,11.536309,75.873429,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Debris flow,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0008,Unknown
+SYN-NASA-0009,2024-02-13,10.417793,75.824084,India,Kerala / Western Ghats (illustrative),Palakkad,Human activity,Earth slide,0,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0009,Unknown
+SYN-NASA-0010,2022-11-05,10.965656,76.405173,India,Kerala / Western Ghats (illustrative),Wayanad,Human activity,Mudslide,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0010,Approximate
+SYN-NASA-0011,2025-06-18,10.830357,75.904712,India,Kerala / Western Ghats (illustrative),Kozhikode,Human activity,Mudslide,1,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0011,Approximate
+SYN-NASA-0012,2024-12-08,11.7755,76.810144,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Earth slide,2,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0012,Approximate
+SYN-NASA-0013,2024-01-09,11.294571,76.397273,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Unknown,Unknown,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0013,Approximate
+SYN-NASA-0014,2022-10-28,11.598695,76.116244,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Mudslide,3,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0014,Approximate
+SYN-NASA-0015,2020-04-26,10.953804,76.409099,India,Kerala / Western Ghats (illustrative),Idukki,Unknown,Rock fall,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0015,Moderate
+SYN-NASA-0016,2021-04-19,10.586306,75.727365,India,Kerala / Western Ghats (illustrative),Wayanad,Unknown,Mudslide,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0016,Approximate
+SYN-NASA-0017,2018-12-14,11.142794,76.850271,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Mudslide,1,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0017,Unknown
+SYN-NASA-0018,2020-12-28,10.308489,76.278764,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Rock fall,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0018,Moderate
+SYN-NASA-0019,2025-05-29,11.606973,76.639282,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Mudslide,2,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0019,Approximate
+SYN-NASA-0020,2021-05-28,11.273829,75.799276,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Unknown,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0020,Moderate
+SYN-NASA-0021,2018-11-29,11.488749,76.28399,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Unknown,1,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0021,Unknown
+SYN-NASA-0022,2023-03-19,10.802694,76.288848,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Mudslide,1,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0022,Approximate
+SYN-NASA-0023,2025-09-11,11.850187,76.825392,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Mudslide,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0023,Approximate
+SYN-NASA-0024,2024-12-08,11.718306,76.386074,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Rock fall,1,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0024,Approximate
+SYN-NASA-0025,2020-03-11,11.523252,76.268187,India,Kerala / Western Ghats (illustrative),Idukki,Unknown,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0025,Unknown
+SYN-NASA-0026,2021-08-18,10.530886,76.020371,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Rock fall,3,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0026,Approximate
+SYN-NASA-0027,2022-03-31,10.993426,76.097883,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Earth slide,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0027,Moderate
+SYN-NASA-0028,2019-12-25,10.274466,76.324807,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Rock fall,3,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0028,Moderate
+SYN-NASA-0029,2020-02-24,10.462292,76.226694,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Rock fall,0,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0029,Unknown
+SYN-NASA-0030,2019-11-23,11.361183,75.725934,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Debris flow,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0030,Approximate
+SYN-NASA-0031,2025-12-14,11.466096,76.69155,India,Kerala / Western Ghats (illustrative),Palakkad,Unknown,Unknown,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0031,Unknown
+SYN-NASA-0032,2023-12-19,11.844767,76.775393,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Debris flow,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0032,Unknown
+SYN-NASA-0033,2024-09-21,10.753903,75.868299,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Debris flow,3,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0033,Moderate
+SYN-NASA-0034,2024-07-12,10.829782,76.364843,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Unknown,2,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0034,Approximate
+SYN-NASA-0035,2025-09-01,10.998245,75.830291,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Earth slide,1,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0035,Unknown
+SYN-NASA-0036,2018-11-04,10.522101,76.506688,India,Kerala / Western Ghats (illustrative),Kozhikode,Unknown,Earth slide,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0036,Approximate
+SYN-NASA-0037,2025-01-18,10.420867,76.037481,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0037,Moderate
+SYN-NASA-0038,2018-07-14,11.008698,76.491307,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Rock fall,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0038,Moderate
+SYN-NASA-0039,2021-10-20,10.585746,76.572394,India,Kerala / Western Ghats (illustrative),Palakkad,Unknown,Debris flow,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0039,Approximate
+SYN-NASA-0040,2022-10-02,11.338684,76.622377,India,Kerala / Western Ghats (illustrative),Kozhikode,Human activity,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0040,Moderate
+SYN-NASA-0041,2020-11-10,10.943158,75.829289,India,Kerala / Western Ghats (illustrative),Wayanad,Unknown,Debris flow,1,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0041,Approximate
+SYN-NASA-0042,2019-03-03,11.615553,76.799214,India,Kerala / Western Ghats (illustrative),Wayanad,Human activity,Earth slide,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0042,Approximate
+SYN-NASA-0043,2019-07-16,11.390451,75.976257,India,Kerala / Western Ghats (illustrative),Idukki,Human activity,Unknown,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0043,Approximate
+SYN-NASA-0044,2024-08-05,10.731023,75.744895,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Unknown,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0044,Approximate
+SYN-NASA-0045,2020-07-19,11.614842,76.365823,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Unknown,Rock fall,3,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0045,Moderate
+SYN-NASA-0046,2020-06-25,11.568099,76.145107,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Mudslide,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0046,Unknown
+SYN-NASA-0047,2025-05-20,10.858713,76.695748,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Mudslide,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0047,Approximate
+SYN-NASA-0048,2019-02-25,10.690158,76.669902,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Earth slide,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0048,Approximate
+SYN-NASA-0049,2025-04-26,11.360242,76.080567,India,Kerala / Western Ghats (illustrative),Kozhikode,Human activity,Debris flow,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0049,Approximate
+SYN-NASA-0050,2025-05-13,10.437579,76.843479,India,Kerala / Western Ghats (illustrative),Palakkad,Human activity,Rock fall,3,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0050,Moderate
+SYN-NASA-0051,2022-10-14,10.539844,76.049101,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Mudslide,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0051,Approximate
+SYN-NASA-0052,2019-04-29,10.212516,76.318069,India,Kerala / Western Ghats (illustrative),Palakkad,Unknown,Unknown,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0052,Moderate
+SYN-NASA-0053,2019-04-01,11.537771,76.007158,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Debris flow,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0053,Approximate
+SYN-NASA-0054,2020-04-11,11.330246,76.823252,India,Kerala / Western Ghats (illustrative),Palakkad,Human activity,Mudslide,2,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0054,Approximate
+SYN-NASA-0055,2022-08-14,11.398781,75.897529,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Unknown,1,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0055,Moderate
+SYN-NASA-0056,2019-03-25,11.527239,75.753893,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Unknown,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0056,Moderate
+SYN-NASA-0057,2021-08-23,10.980157,76.222116,India,Kerala / Western Ghats (illustrative),Palakkad,Unknown,Earth slide,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0057,Moderate
+SYN-NASA-0058,2018-12-04,11.16686,76.890851,India,Kerala / Western Ghats (illustrative),Idukki,Unknown,Debris flow,1,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0058,Unknown
+SYN-NASA-0059,2022-04-27,10.437655,76.770013,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Rock fall,1,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0059,Moderate
+SYN-NASA-0060,2018-03-03,10.394701,76.59833,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Unknown,2,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0060,Unknown
+SYN-NASA-0061,2023-09-02,11.336285,76.768951,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Unknown,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0061,Moderate
+SYN-NASA-0062,2018-06-11,11.000864,76.772136,India,Kerala / Western Ghats (illustrative),Idukki,Unknown,Mudslide,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0062,Approximate
+SYN-NASA-0063,2019-07-23,11.160901,76.32263,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Debris flow,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0063,Approximate
+SYN-NASA-0064,2019-05-25,11.500498,76.079115,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Debris flow,2,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0064,Approximate
+SYN-NASA-0065,2024-08-23,11.279021,76.626415,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Earth slide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0065,Moderate
+SYN-NASA-0066,2018-06-05,11.141085,76.493994,India,Kerala / Western Ghats (illustrative),Kozhikode,Unknown,Earth slide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0066,Approximate
+SYN-NASA-0067,2021-06-07,11.150652,76.148389,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Debris flow,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0067,Unknown
+SYN-NASA-0068,2022-09-23,10.716715,75.81336,India,Kerala / Western Ghats (illustrative),Palakkad,Human activity,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0068,Moderate
+SYN-NASA-0069,2022-02-15,10.25239,76.596148,India,Kerala / Western Ghats (illustrative),Palakkad,Human activity,Earth slide,3,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0069,Unknown
+SYN-NASA-0070,2023-06-11,10.94242,76.014953,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Debris flow,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0070,Unknown
+SYN-NASA-0071,2024-06-03,10.564794,76.824176,India,Kerala / Western Ghats (illustrative),Idukki,Human activity,Debris flow,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0071,Moderate
+SYN-NASA-0072,2021-02-23,10.894499,75.989165,India,Kerala / Western Ghats (illustrative),Kozhikode,Unknown,Earth slide,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0072,Approximate
+SYN-NASA-0073,2024-08-15,11.650785,75.84731,India,Kerala / Western Ghats (illustrative),Kozhikode,Unknown,Mudslide,3,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0073,Unknown
+SYN-NASA-0074,2020-07-17,10.597697,76.697335,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Unknown,2,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0074,Approximate
+SYN-NASA-0075,2025-11-14,10.299115,75.883941,India,Kerala / Western Ghats (illustrative),Idukki,Unknown,Earth slide,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0075,Approximate
+SYN-NASA-0076,2022-01-13,10.678353,75.915122,India,Kerala / Western Ghats (illustrative),Kozhikode,Unknown,Rock fall,2,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0076,Unknown
+SYN-NASA-0077,2023-11-20,10.699109,76.419259,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Unknown,1,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0077,Moderate
+SYN-NASA-0078,2024-12-30,11.325258,76.749474,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Earth slide,2,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0078,Approximate
+SYN-NASA-0079,2024-05-03,11.146955,75.935722,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Rock fall,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0079,Moderate
+SYN-NASA-0080,2024-10-21,11.532627,76.072388,India,Kerala / Western Ghats (illustrative),Idukki,Human activity,Earth slide,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0080,Moderate
+SYN-NASA-0081,2022-04-16,11.329333,76.632886,India,Kerala / Western Ghats (illustrative),Kozhikode,Unknown,Debris flow,2,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0081,Unknown
+SYN-NASA-0082,2018-05-07,10.890858,76.866192,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Rock fall,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0082,Unknown
+SYN-NASA-0083,2021-12-10,11.583835,76.300889,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Human activity,Earth slide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0083,Approximate
+SYN-NASA-0084,2019-06-14,10.483854,75.872677,India,Kerala / Western Ghats (illustrative),Kozhikode,Human activity,Unknown,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0084,Approximate
+SYN-NASA-0085,2025-02-09,10.238611,75.716724,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0085,Moderate
+SYN-NASA-0086,2019-11-23,10.353081,75.975587,India,Kerala / Western Ghats (illustrative),Wayanad,Human activity,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0086,Approximate
+SYN-NASA-0087,2019-10-28,11.428011,75.858187,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Earth slide,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0087,Approximate
+SYN-NASA-0088,2019-12-30,10.985191,76.51319,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Debris flow,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0088,Approximate
+SYN-NASA-0089,2023-02-20,10.474162,75.846199,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Rock fall,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0089,Approximate
+SYN-NASA-0090,2022-07-26,11.051776,76.307596,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Unknown,Unknown,1,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0090,Unknown
+SYN-NASA-0091,2025-08-02,10.458931,76.533115,India,Kerala / Western Ghats (illustrative),Palakkad,Human activity,Debris flow,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0091,Approximate
+SYN-NASA-0092,2021-04-30,11.383745,76.39734,India,Kerala / Western Ghats (illustrative),Palakkad,Unknown,Unknown,3,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0092,Approximate
+SYN-NASA-0093,2020-04-04,10.958466,75.939731,India,Kerala / Western Ghats (illustrative),Idukki,Human activity,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0093,Unknown
+SYN-NASA-0094,2018-05-24,10.847736,76.664949,India,Kerala / Western Ghats (illustrative),Wayanad,Human activity,Rock fall,0,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0094,Approximate
+SYN-NASA-0095,2018-01-21,10.712571,76.558489,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Mudslide,3,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0095,Unknown
+SYN-NASA-0096,2020-12-26,11.27148,76.586781,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Unknown,1,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0096,Approximate
+SYN-NASA-0097,2025-05-27,10.815081,75.857269,India,Kerala / Western Ghats (illustrative),Idukki,Unknown,Debris flow,0,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0097,Approximate
+SYN-NASA-0098,2022-03-10,10.349005,75.848505,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Debris flow,2,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0098,Approximate
+SYN-NASA-0099,2025-02-22,10.40061,76.813075,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Mudslide,1,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0099,Unknown
+SYN-NASA-0100,2018-10-24,11.835226,76.177094,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Unknown,0,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0100,Moderate
+SYN-NASA-0101,2018-09-30,11.744587,76.061138,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Debris flow,2,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0101,Moderate
+SYN-NASA-0102,2024-08-30,11.389502,76.286301,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Unknown,Mudslide,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0102,Approximate
+SYN-NASA-0103,2018-11-08,10.651979,76.495437,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Debris flow,2,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0103,Approximate
+SYN-NASA-0104,2018-06-01,11.8476,76.846748,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Mudslide,3,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0104,Moderate
+SYN-NASA-0105,2021-03-25,11.523877,76.043735,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Mudslide,1,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0105,Approximate
+SYN-NASA-0106,2025-05-24,11.418713,76.80977,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Debris flow,2,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0106,Moderate
+SYN-NASA-0107,2023-07-06,10.963915,75.729831,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Mudslide,0,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0107,Unknown
+SYN-NASA-0108,2018-10-17,10.662811,76.366238,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Unknown,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0108,Unknown
+SYN-NASA-0109,2024-09-10,10.363865,76.46077,India,Kerala / Western Ghats (illustrative),Kozhikode,Rainfall,Unknown,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0109,Moderate
+SYN-NASA-0110,2024-09-29,11.734424,75.827077,India,Kerala / Western Ghats (illustrative),Wayanad,Rainfall,Debris flow,3,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0110,Approximate
+SYN-NASA-0111,2024-05-27,10.97482,75.868408,India,Kerala / Western Ghats (illustrative),Kozhikode,Unknown,Rock fall,1,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0111,Approximate
+SYN-NASA-0112,2025-03-20,10.544018,76.202937,India,Kerala / Western Ghats (illustrative),Idukki,Rainfall,Rock fall,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0112,Unknown
+SYN-NASA-0113,2019-12-02,10.720126,76.859478,India,Kerala / Western Ghats (illustrative),Wayanad,Unknown,Earth slide,2,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0113,Moderate
+SYN-NASA-0114,2025-10-31,11.184673,76.415251,India,Kerala / Western Ghats (illustrative),Palakkad,Unknown,Debris flow,3,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0114,Moderate
+SYN-NASA-0115,2020-07-25,10.500514,76.819628,India,Kerala / Western Ghats (illustrative),Kozhikode,Human activity,Unknown,3,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0115,Moderate
+SYN-NASA-0116,2024-05-30,11.656244,76.665233,India,Kerala / Western Ghats (illustrative),Palakkad,Unknown,Mudslide,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0116,Approximate
+SYN-NASA-0117,2022-08-19,11.489483,76.260858,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Unknown,2,1,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0117,Unknown
+SYN-NASA-0118,2024-03-26,11.423087,76.641716,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Debris flow,1,2,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0118,Unknown
+SYN-NASA-0119,2023-01-08,10.934558,75.721404,India,Kerala / Western Ghats (illustrative),Pathanamthitta,Rainfall,Debris flow,0,0,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0119,Unknown
+SYN-NASA-0120,2023-02-20,11.266425,75.830973,India,Kerala / Western Ghats (illustrative),Palakkad,Rainfall,Unknown,0,4,SYNTHETIC_DEMO_NOT_REAL_NASA_DATA,SYN-SRC-0120,Unknown

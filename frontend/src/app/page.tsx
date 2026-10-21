@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { DemoBanner } from "@/components/navigation/DemoBanner";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
+import { SafeImage } from "@/components/ui/SafeImage";
+import { IMAGES } from "@/data/images";
 import {
   Search,
   MapPin,
@@ -16,7 +18,8 @@ import {
   AlertTriangle,
   Phone,
 } from "lucide-react";
-import { MOCK_LOCATIONS } from "@/data/mockLocations";
+import { LocationData } from "@/data/mockLocations";
+import { getModelLocations, toLocationData } from "@/lib/model";
 
 const RISK_LEVEL_EXPLANATIONS = [
   {
@@ -59,10 +62,17 @@ const RISK_LEVEL_EXPLANATIONS = [
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [locations, setLocations] = useState<LocationData[]>([]);
   const router = useRouter();
 
+  useEffect(() => {
+    getModelLocations()
+      .then((response) => setLocations(response.locations.map(toLocationData)))
+      .catch(() => setLocations([]));
+  }, []);
+
   const filteredLocations = searchQuery.trim()
-    ? MOCK_LOCATIONS.filter(
+    ? locations.filter(
         (loc) =>
           loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           loc.district.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -90,9 +100,22 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="border-b border-[#E1E6E1] bg-white py-14 sm:py-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F3F5F3] border border-[#E1E6E1] text-[#247343] text-xs font-semibold">
+        <section className="relative isolate overflow-hidden border-b border-[#E1E6E1] py-14 sm:py-20">
+          <div className="absolute inset-0 -z-10">
+            <SafeImage
+              src={IMAGES.heroLandscape.url}
+              alt={IMAGES.heroLandscape.alt}
+              fallbackGradient={IMAGES.heroLandscape.fallbackGradient}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-white/85" />
+          </div>
+
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/85 border border-[#E1E6E1] text-[#247343] text-xs font-semibold shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#247343]" />
               <span>Landslide Risk Awareness for Kerala</span>
             </div>

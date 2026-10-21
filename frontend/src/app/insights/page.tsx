@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { DemoBanner } from "@/components/navigation/DemoBanner";
@@ -9,7 +9,8 @@ import { Footer } from "@/components/navigation/Footer";
 import { ShapBarChart } from "@/components/explainability/ShapBarChart";
 import { FeatureImportanceChart } from "@/components/explainability/FeatureImportanceChart";
 import { AuthGate } from "@/components/auth/AuthGate";
-import { MOCK_LOCATIONS, LocationData } from "@/data/mockLocations";
+import { LocationData } from "@/data/mockLocations";
+import { getModelLocations, toLocationData } from "@/lib/model";
 import {
   Sparkles,
   ArrowRight,
@@ -19,9 +20,20 @@ import {
 function InsightsContent() {
   const searchParams = useSearchParams();
   const initialLocId = searchParams.get("location") || "meppadi";
-  const [selectedLocation, setSelectedLocation] = useState<LocationData>(
-    MOCK_LOCATIONS.find((l) => l.id === initialLocId) || MOCK_LOCATIONS[0]
-  );
+  const [locations, setLocations] = useState<LocationData[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
+
+  useEffect(() => {
+    getModelLocations().then((response) => {
+      const loaded = response.locations.map(toLocationData);
+      setLocations(loaded);
+      setSelectedLocation(loaded.find((location) => location.id === initialLocId) || loaded[0] || null);
+    });
+  }, [initialLocId]);
+
+  if (!selectedLocation) {
+    return <div className="p-8 text-[#526056]">Loading backend model data...</div>;
+  }
 
   return (
     <AuthGate
@@ -51,7 +63,7 @@ function InsightsContent() {
             <span className="text-[11px] text-[#247343] font-semibold">8 Monitored High-Range Sectors</span>
           </div>
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            {MOCK_LOCATIONS.map((loc) => {
+            {locations.map((loc) => {
               const isSelected = loc.id === selectedLocation.id;
               return (
                 <button

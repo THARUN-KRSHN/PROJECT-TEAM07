@@ -1,0 +1,12 @@
+streamlit>=1.40
+pandas>=2.0
+numpy>=1.26
+scikit-learn>=1.4
+scipy>=1.11
+pydeck>=0.9
+fastapi>=0.110
+uvicorn>=0.29
+# Optional, only needed when you load real rasters / boundaries:
+# rasterio
+# geopandas
+# xgboost

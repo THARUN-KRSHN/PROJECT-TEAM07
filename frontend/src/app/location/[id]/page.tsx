@@ -1,8 +1,9 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { MOCK_LOCATIONS, getLocationById } from "@/data/mockLocations";
+import { LocationData } from "@/data/mockLocations";
+import { getModelLocation, getModelLocations, toLocationData } from "@/lib/model";
 import { DemoBanner } from "@/components/navigation/DemoBanner";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
@@ -31,8 +32,26 @@ interface LocationPageProps {
 
 export default function LocationPage({ params }: LocationPageProps) {
   const resolvedParams = use(params);
-  const location = getLocationById(resolvedParams.id) || MOCK_LOCATIONS[0];
+  const [location, setLocation] = useState<LocationData | null>(null);
+  const [locations, setLocations] = useState<LocationData[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const { isAuthenticated, user } = useAuth();
+
+  useEffect(() => {
+    getModelLocation(resolvedParams.id)
+      .then((modelLocation) => setLocation(toLocationData(modelLocation)))
+      .catch((error: Error) => setLoadError(error.message));
+    getModelLocations()
+      .then((response) => setLocations(response.locations.map(toLocationData)))
+      .catch(() => setLocations([]));
+  }, [resolvedParams.id]);
+
+  if (loadError) {
+    return <div className="p-8 text-red-700">Unable to load backend location data: {loadError}</div>;
+  }
+  if (!location) {
+    return <div className="p-8 text-[#526056]">Loading backend location data...</div>;
+  }
   const riskColor = getRiskColor(location.riskLevel);
 
   const latestRecord =
@@ -329,7 +348,7 @@ export default function LocationPage({ params }: LocationPageProps) {
               Other Monitored Western Ghats Locations
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
-              {MOCK_LOCATIONS.map((loc) => {
+              {locations.map((loc) => {
                 const isCurrent = loc.id === location.id;
                 return (
                   <Link

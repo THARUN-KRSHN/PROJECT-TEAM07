@@ -17,10 +17,10 @@ export function SafeImage({
   fallbackClass,
   containerClassName,
   className,
+  sizes,
   ...props
 }: SafeImageProps) {
   const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   if (hasError || !src) {
     return (
@@ -39,25 +39,14 @@ export function SafeImage({
       className={cn("w-full h-full overflow-hidden", containerClassName)}
       style={{ position: "relative" }}
     >
-      {isLoading && (
-        <div
-          className="absolute inset-0 animate-pulse"
-          style={{ background: fallbackGradient }}
-        />
-      )}
       <Image
         src={src}
         alt={alt}
         unoptimized
-        className={cn(
-          "transition-opacity duration-700",
-          isLoading ? "opacity-0" : "opacity-100",
-          className
-        )}
-        onLoad={() => setIsLoading(false)}
+        sizes={sizes ?? "100vw"}
+        className={cn("block transition-opacity duration-700", className)}
         onError={() => {
           setHasError(true);
-          setIsLoading(false);
         }}
         {...props}
       />

@@ -142,7 +142,7 @@ npm run lint
 npm run build
 ```
 
-The prototype uses curated local mock data and does not require a backend, database or API key. The map can use Carto Voyager, Esri satellite and OpenStreetMap tiles; location search uses the public Nominatim service and has a local fallback.
+The prototype uses curated local mock data and does not require a backend, database or API key. The map uses OpenTopoMap terrain tiles, Esri satellite imagery and OpenStreetMap tiles; location search uses the public Nominatim service and has a local fallback.
 
 ## Design system and accessibility
 

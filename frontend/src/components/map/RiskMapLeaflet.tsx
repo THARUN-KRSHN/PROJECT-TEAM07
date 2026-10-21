@@ -5,6 +5,22 @@ import L from "leaflet";
 import { LocationData } from "@/data/mockLocations";
 import { getRiskColor } from "@/lib/utils";
 
+const BASE_MAPS = {
+  terrain: {
+    url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a href="https://opentopomap.org/">OpenTopoMap</a> (CC-BY-SA) &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  },
+  satellite: {
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS",
+  },
+  osm: {
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  },
+} as const;
+
 interface RiskMapLeafletProps {
   locations: LocationData[];
   selectedLocation: LocationData;
@@ -45,11 +61,10 @@ export default function RiskMapLeaflet({
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
-    // Initial tile layer - CartoDB Voyager Light Tiles
-    const lightTileUrl = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
-    const tileLayer = L.tileLayer(lightTileUrl, {
+    const initialBaseMap = BASE_MAPS[baseMapType];
+    const tileLayer = L.tileLayer(initialBaseMap.url, {
       maxZoom: 18,
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+      attribution: initialBaseMap.attribution,
     }).addTo(map);
 
     tileLayerRef.current = tileLayer;
@@ -75,24 +90,11 @@ export default function RiskMapLeaflet({
 
     mapInstanceRef.current.removeLayer(tileLayerRef.current);
 
-    let newUrl = "";
-    let attribution = "";
+    const nextBaseMap = BASE_MAPS[baseMapType];
 
-    if (baseMapType === "satellite") {
-      newUrl = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
-      attribution = "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS";
-    } else if (baseMapType === "osm") {
-      newUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-      attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-    } else {
-      // CartoDB Voyager Light for clean terrain readability
-      newUrl = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
-      attribution = '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-    }
-
-    const newLayer = L.tileLayer(newUrl, {
+    const newLayer = L.tileLayer(nextBaseMap.url, {
       maxZoom: 18,
-      attribution,
+      attribution: nextBaseMap.attribution,
     }).addTo(mapInstanceRef.current);
 
     tileLayerRef.current = newLayer;
