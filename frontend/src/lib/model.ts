@@ -1,7 +1,11 @@
 import { LocationData, HistoricalEvent } from "@/data/mockLocations";
 import { getRiskLevel } from "@/lib/utils";
 
-const MODEL_API_BASE = process.env.NEXT_PUBLIC_MODEL_URL || "http://localhost:8000/api";
+const MODEL_API_BASE =
+  process.env.NEXT_PUBLIC_MODEL_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://project-team07.onrender.com/api"
+    : "http://localhost:8000/api");
 
 interface ModelLocation {
   slug: string;
