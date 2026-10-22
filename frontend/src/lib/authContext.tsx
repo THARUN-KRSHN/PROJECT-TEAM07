@@ -50,12 +50,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("giriraksha_auth");
-      setUser(stored ? JSON.parse(stored) : null);
-    } catch {
-      setUser(null);
-    }
+    const timer = window.setTimeout(() => {
+      try {
+        const stored = localStorage.getItem("giriraksha_auth");
+        setUser(stored ? JSON.parse(stored) : null);
+      } catch {
+        setUser(null);
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const loginAs = (role: UserRole) => {
