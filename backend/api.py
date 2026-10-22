@@ -22,6 +22,6 @@ def get_doc(name: str):
 
 @app.get("/api/location/{slug}")
 def get_location(slug: str):
-    if slug not in C.SEED_LOCATIONS:
+    if not slug.replace("-", "").isalnum():
         raise HTTPException(404, "unknown location")
     return _read(f"location/{slug}.json")

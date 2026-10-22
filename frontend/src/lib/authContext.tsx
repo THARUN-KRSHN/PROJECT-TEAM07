@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export type UserRole = "officer" | "researcher" | "admin";
 
@@ -46,16 +46,17 @@ const PRESET_USERS: Record<UserRole, AuthUser> = {
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Use lazy state initialization to read from storage safely without triggering effect cascading renders
-  const [user, setUser] = useState<AuthUser | null>(() => {
-    if (typeof window === "undefined") return null;
+  // Keep the first render identical on the server and client. Storage is browser-only.
+  const [user, setUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
     try {
       const stored = localStorage.getItem("giriraksha_auth");
-      return stored ? JSON.parse(stored) : null;
+      setUser(stored ? JSON.parse(stored) : null);
     } catch {
-      return null;
+      setUser(null);
     }
-  });
+  }, []);
 
   const loginAs = (role: UserRole) => {
     const authUser = PRESET_USERS[role];

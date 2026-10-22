@@ -4,7 +4,13 @@ import React, { useState, useMemo, Suspense, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { LocationData } from "@/data/mockLocations";
-import { getModelLocations, toLocationData } from "@/lib/model";
+import {
+  getModelAnalysis,
+  getModelLocation,
+  getModelLocations,
+  ModelAnalysis,
+  toLocationData,
+} from "@/lib/model";
 import { MapControls } from "@/components/map/MapControls";
 import { LocationPanel } from "@/components/map/LocationPanel";
 import { MapFallback } from "@/components/map/MapFallback";
@@ -36,6 +42,7 @@ function MapPageContent() {
   const [locations, setLocations] = useState<LocationData[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
+  const [modelAnalysis, setModelAnalysis] = useState<ModelAnalysis | null>(null);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [baseMapType, setBaseMapType] = useState<"terrain" | "satellite" | "osm">("terrain");
   const [useFallbackMap, setUseFallbackMap] = useState(false);
@@ -47,16 +54,25 @@ function MapPageContent() {
   });
 
   useEffect(() => {
-    getModelLocations()
-      .then((response) => {
+    Promise.all([getModelLocations(), getModelAnalysis()])
+      .then(([response, analysis]) => {
         const loaded = response.locations.map(toLocationData);
         setLocations(loaded);
+        setModelAnalysis(analysis);
         setSelectedLocation(
           loaded.find((location) => location.id === initialLocId) || loaded[0] || null
         );
       })
       .catch((error: Error) => setLoadError(error.message));
   }, [initialLocId]);
+
+  useEffect(() => {
+    if (!selectedLocation || selectedLocation.id.startsWith("osm-")) return;
+
+    getModelLocation(selectedLocation.id)
+      .then((location) => setSelectedLocation(toLocationData(location)))
+      .catch((error: Error) => setLoadError(error.message));
+  }, [selectedLocation?.id]);
 
   const handleToggleLayer = (
     layerKey: "risk" | "historical" | "rainfall" | "settlements"
@@ -237,7 +253,7 @@ function MapPageContent() {
 
         {/* Right: Public Location Summary Panel */}
         <aside className="w-full lg:w-[32%] xl:w-[28%] h-[44dvh] min-h-[300px] lg:h-full shrink-0 z-20 bg-white">
-          <LocationPanel location={selectedLocation} />
+          <LocationPanel location={selectedLocation} analysis={modelAnalysis} />
         </aside>
       </main>
     </div>

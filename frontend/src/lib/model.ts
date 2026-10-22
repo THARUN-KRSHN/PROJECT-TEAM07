@@ -30,6 +30,33 @@ interface LocationsResponse {
   locations: ModelLocation[];
 }
 
+export interface ModelAnalysis {
+  meta?: {
+    data_mode?: string;
+    generated_at?: string;
+    model?: string;
+    disclaimer?: string;
+  };
+  selected_model?: string;
+  n_events?: number;
+  sampling?: {
+    n_positive?: number;
+    n_background?: number;
+  };
+  model_metrics?: Record<string, {
+    roc_auc?: number;
+    pr_auc?: number;
+    precision?: number;
+    recall?: number;
+    f1?: number;
+    validation?: string;
+  }>;
+  importance?: Array<{
+    feature: string;
+    importance: number;
+  }>;
+}
+
 const getJson = async <T>(path: string): Promise<T> => {
   const response = await fetch(`${MODEL_API_BASE}/${path}`, { cache: "no-store" });
   if (!response.ok) {
@@ -41,6 +68,18 @@ const getJson = async <T>(path: string): Promise<T> => {
 export const getModelLocations = () => getJson<LocationsResponse>("locations");
 
 export const getModelLocation = (slug: string) => getJson<ModelLocation>(`location/${slug}`);
+
+export const getModelAnalysis = async (): Promise<ModelAnalysis> => {
+  const [research, insights] = await Promise.all([
+    getJson<ModelAnalysis>("research"),
+    getJson<ModelAnalysis>("insights"),
+  ]);
+
+  return {
+    ...research,
+    importance: insights.importance || [],
+  };
+};
 
 const toRiskLevel = (value: string, score: number) =>
   value

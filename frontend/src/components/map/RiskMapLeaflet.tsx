@@ -46,6 +46,7 @@ export default function RiskMapLeaflet({
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const markerGroupRef = useRef<L.LayerGroup | null>(null);
   const historicalGroupRef = useRef<L.LayerGroup | null>(null);
+  const hasFittedLocationsRef = useRef(false);
 
   // Initialize Map
   useEffect(() => {
@@ -192,11 +193,30 @@ export default function RiskMapLeaflet({
       });
     }
 
-    // Smoothly fly to selected location
-    mapInstanceRef.current.flyTo(selectedLocation.coordinates, 11, {
-      duration: 1.0,
-      easeLinearity: 0.25,
-    });
+    const validLocations = locations.filter(
+      (location) =>
+        Number.isFinite(location.coordinates[0]) &&
+        Number.isFinite(location.coordinates[1]) &&
+        location.coordinates[0] >= -90 &&
+        location.coordinates[0] <= 90 &&
+        location.coordinates[1] >= -180 &&
+        location.coordinates[1] <= 180
+    );
+
+    if (!hasFittedLocationsRef.current && validLocations.length > 0) {
+      const bounds = L.latLngBounds(validLocations.map((location) => location.coordinates));
+      mapInstanceRef.current.fitBounds(bounds, {
+        padding: [36, 36],
+        maxZoom: 10,
+        animate: false,
+      });
+      hasFittedLocationsRef.current = true;
+    } else {
+      mapInstanceRef.current.flyTo(selectedLocation.coordinates, 12, {
+        duration: 1.0,
+        easeLinearity: 0.25,
+      });
+    }
   }, [locations, selectedLocation, activeLayers, onSelectLocation]);
 
   return <div ref={mapContainerRef} className="w-full h-full relative" />;

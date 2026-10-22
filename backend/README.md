@@ -4,12 +4,43 @@ Pipeline: ingest -> terrain + rainfall features -> presence-background labels ->
 The frontend reads ONLY those JSON files. Without real data it runs in `demo_synthetic` mode, and every export says so. Nothing in demo mode is a real risk value.
 
 ## Run locally
-```bash
+
+Install the backend dependencies and generate the JSON exports:
+
+```powershell
 cd backend
 pip install -r requirements.txt
-python pipeline.py            # builds static/api/*.json
+python pipeline.py
+```
+
+Run the two backend services in separate terminals. Streamlit serves the
+model console on port 8501, while FastAPI serves the API consumed by Next.js
+on port 8000:
+
+```powershell
+# Terminal 1: REST API
+cd backend
+uvicorn api:app --host 0.0.0.0 --port 8000
+```
+
+```powershell
+# Terminal 2: Streamlit model console
+cd backend
 streamlit run streamlit_app.py
 ```
+
+Run the frontend in a third terminal:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000` for the frontend, `http://localhost:8501` for
+Streamlit, and `http://localhost:8000/docs` for the FastAPI documentation.
+The frontend defaults to `http://localhost:8000/api`. For a deployed API,
+set `NEXT_PUBLIC_MODEL_URL` to its `/api` base URL before starting Next.js.
 
 ## Use real data (drop files in data/raw/)
 | File | Source | Expected columns |
@@ -27,15 +58,33 @@ Real mode switches on when dem.tif + imerg_daily.csv + at least one event file e
 3. Your data is now at `https://<your-app>.streamlit.app/app/static/api/locations.json`, and likewise for the other files.
 4. To refresh: rebuild locally, commit and push `static/api/`. The in-app "Rebuild" button only updates the running container, and that is lost on restart.
 
-## Frontend wiring (Next.js)
+## Backend API and frontend wiring
+
+FastAPI exposes the generated backend data at:
+
+| Endpoint | Contents |
+|---|---|
+| `/api/meta` | Model metadata and disclaimer |
+| `/api/locations` | All mapped risk locations and coordinates |
+| `/api/location/<slug>` | Detailed location data, including 1-, 3-, 7- and 15-day water inflow |
+| `/api/risk_grid` | Risk grid points for mapping |
+| `/api/research` | Model metrics, sampling counts and dataset health |
+| `/api/insights` | Global feature importance |
+| `/api/reports` | Risk class distribution and top locations |
+| `/api/pipeline` | Pipeline stage status |
+
+The frontend reads these endpoints through `frontend/src/lib/model.ts`:
+
 ```ts
-// lib/model.ts
-const BASE = process.env.NEXT_PUBLIC_MODEL_URL!; // https://<app>.streamlit.app/app/static/api
-export const getLocations = () => fetch(`${BASE}/locations.json`).then(r => r.json());
-export const getLocation  = (slug: string) => fetch(`${BASE}/location/${slug}.json`).then(r => r.json());
-export const getRiskGrid  = () => fetch(`${BASE}/risk_grid.json`).then(r => r.json());
+const BASE = process.env.NEXT_PUBLIC_MODEL_URL || "http://localhost:8000/api";
+export const getLocations = () => fetch(`${BASE}/locations`);
+export const getLocation = (slug: string) => fetch(`${BASE}/location/${slug}`);
 ```
-Mapping: `/map` -> risk_grid + locations, `/location/[slug]` -> location/<slug>, `/insights` -> insights, `/research` -> research, `/reports` -> reports, `/pipeline` -> pipeline. Replace the mock data files with these calls.
+
+The map uses the detailed location endpoint when a marker is selected, so the
+side panel displays the backend water-inflow windows and model analysis.
+Location coordinates are `[latitude, longitude]` in WGS84 and are passed
+directly to Leaflet/OpenStreetMap.
 
 **CORS caveat:** I could not verify that Streamlit Cloud sends CORS headers for static files. If the browser blocks the fetch, either (a) fetch from a Next.js server component or route handler (no CORS applies), or (b) deploy `api.py` on Render/Railway: `uvicorn api:app --host 0.0.0.0 --port $PORT`, which serves the same JSON under `/api/...` with CORS enabled.
 

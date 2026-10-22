@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { LocationData } from "@/data/mockLocations";
+import { ModelAnalysis } from "@/lib/model";
 import { getRiskColor } from "@/lib/utils";
 import {
   MapPin,
@@ -18,11 +19,12 @@ import { useAuth } from "@/lib/authContext";
 
 interface LocationPanelProps {
   location: LocationData;
+  analysis?: ModelAnalysis | null;
   onClose?: () => void;
   className?: string;
 }
 
-export function LocationPanel({ location, onClose, className = "" }: LocationPanelProps) {
+export function LocationPanel({ location, analysis, onClose, className = "" }: LocationPanelProps) {
   const { isAuthenticated } = useAuth();
   const riskColor = getRiskColor(location.riskLevel);
 
@@ -89,12 +91,12 @@ export function LocationPanel({ location, onClose, className = "" }: LocationPan
           </p>
         </div>
 
-        {/* 2. Rainfall Summary (Latest available observation and date; show "Unavailable" if data missing) */}
+        {/* 2. Water inflow summary across all backend rainfall windows */}
         <div className="bg-[#F3F5F3] rounded-lg p-4 border border-[#E1E6E1] space-y-2">
           <div className="flex items-center justify-between text-xs">
             <span className="font-bold text-[#202923] flex items-center gap-1.5">
               <CloudRain className="w-4 h-4 text-[#247343]" />
-              <span>Rainfall Summary</span>
+              <span>Water Inflow Summary</span>
             </span>
             <span className="text-[11px] text-[#526056]">
               {latestRecord ? `Observed: ${latestRecord.date}` : "Status"}
@@ -102,17 +104,29 @@ export function LocationPanel({ location, onClose, className = "" }: LocationPan
           </div>
 
           {latestRecord ? (
-            <div className="grid grid-cols-2 gap-3 pt-1">
+            <div className="grid grid-cols-2 gap-2 pt-1">
               <div className="bg-white p-2.5 rounded border border-[#E1E6E1]">
-                <div className="text-[10px] uppercase text-[#526056]">Daily Inflow</div>
+                <div className="text-[10px] uppercase text-[#526056]">1-Day Inflow</div>
                 <div className="text-lg font-bold text-[#202923] mt-0.5">
-                  {latestRecord.daily} <span className="text-xs font-normal text-[#526056]">mm</span>
+                  {location.rainfall.day1} <span className="text-xs font-normal text-[#526056]">mm</span>
+                </div>
+              </div>
+              <div className="bg-white p-2.5 rounded border border-[#E1E6E1]">
+                <div className="text-[10px] uppercase text-[#526056]">3-Day Cumulative</div>
+                <div className="text-lg font-bold text-[#202923] mt-0.5">
+                  {location.rainfall.day3} <span className="text-xs font-normal text-[#526056]">mm</span>
                 </div>
               </div>
               <div className="bg-white p-2.5 rounded border border-[#E1E6E1]">
                 <div className="text-[10px] uppercase text-[#526056]">7-Day Cumulative</div>
                 <div className="text-lg font-bold text-[#202923] mt-0.5">
-                  {latestRecord.cumulative7d} <span className="text-xs font-normal text-[#526056]">mm</span>
+                  {location.rainfall.day7} <span className="text-xs font-normal text-[#526056]">mm</span>
+                </div>
+              </div>
+              <div className="bg-white p-2.5 rounded border border-[#E1E6E1]">
+                <div className="text-[10px] uppercase text-[#526056]">15-Day Cumulative</div>
+                <div className="text-lg font-bold text-[#202923] mt-0.5">
+                  {location.rainfall.day15} <span className="text-xs font-normal text-[#526056]">mm</span>
                 </div>
               </div>
             </div>
@@ -125,6 +139,9 @@ export function LocationPanel({ location, onClose, className = "" }: LocationPan
           <div className="text-[11px] text-[#526056]">
             Precipitation status: <strong className="text-[#202923]">{location.rainfallStatus || "Unavailable"}</strong>
           </div>
+          <p className="text-[10px] leading-relaxed text-[#526056]">
+            Backend rolling rainfall estimates at the nearest rainfall cell; approximately 10 km resolution, not direct 30 m measurements.
+          </p>
         </div>
 
         {/* 3. Historical Landslides */}
@@ -168,6 +185,34 @@ export function LocationPanel({ location, onClose, className = "" }: LocationPan
             <strong className="text-[#202923]">Safety reminder:</strong> A low category does not guarantee safety. Follow official alerts and local authorities&apos; instructions.
           </p>
         </div>
+
+        {analysis && (
+          <div className="bg-[#F3F5F3] rounded-lg p-4 border border-[#E1E6E1] space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-xs text-[#202923]">Backend model analysis</span>
+              <span className="text-[10px] uppercase font-semibold text-[#247343]">
+                {analysis.selected_model?.replaceAll("_", " ") || "Unavailable"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[11px]">
+              <div className="bg-white rounded border border-[#E1E6E1] p-2">
+                <span className="block text-[#526056]">ROC-AUC</span>
+                <strong>{analysis.model_metrics?.[analysis.selected_model || ""]?.roc_auc?.toFixed(3) || "Unavailable"}</strong>
+              </div>
+              <div className="bg-white rounded border border-[#E1E6E1] p-2">
+                <span className="block text-[#526056]">Events</span>
+                <strong>{analysis.n_events ?? "Unavailable"}</strong>
+              </div>
+            </div>
+            <div className="text-[11px] text-[#526056]">
+              <span className="font-semibold text-[#202923]">Top features: </span>
+              {(analysis.importance || []).slice(0, 3).map((item) => item.feature).join(", ") || "Unavailable"}
+            </div>
+            <div className="text-[10px] text-[#526056]">
+              {analysis.sampling?.n_positive ?? 0} positive cells · {analysis.sampling?.n_background ?? 0} background cells
+            </div>
+          </div>
+        )}
 
         {/* 5. Actions: Safety Guidance & Authorised Analysis */}
         <div className="pt-2 space-y-2">

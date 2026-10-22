@@ -38,26 +38,28 @@ with t_map:
 
 with t_loc:
     locs = load("locations.json")["locations"]
-    slug = st.selectbox("Location", [l["slug"] for l in locs], format_func=lambda s: C.SEED_LOCATIONS[s][0])
+    location_names = {location["slug"]: location["name"] for location in locs}
+    slug = st.selectbox("Location", [location["slug"] for location in locs],
+                        format_func=lambda value: location_names.get(value, value))
     d = load(f"location/{slug}.json")
     c1, c2, c3 = st.columns(3)
     c1.metric("Risk class (relative)", d["risk_label"]); c2.metric("Score", d["score"]); c3.metric("Events within 15 km", d["history"]["count"])
     a, b = st.columns(2)
     a.subheader("Terrain"); a.json(d["terrain"])
     b.subheader("Rainfall (p99 accumulations)"); b.json(d["rainfall"]); b.caption(d["rainfall_note"])
-    st.subheader("Recent nearby events"); st.dataframe(pd.DataFrame(d["history"]["recent"]), use_container_width=True)
+    st.subheader("Recent nearby events"); st.dataframe(pd.DataFrame(d["history"]["recent"]), width="stretch")
     st.caption(d["exposure_note"])
 
 with t_model:
     r = load("research.json")
     st.subheader("Spatially cross-validated metrics")
-    st.dataframe(pd.DataFrame(r["model_metrics"]).T, use_container_width=True)
+    st.dataframe(pd.DataFrame(r["model_metrics"]).T, width="stretch")
     st.caption(f"Selected: {r['selected_model']} · {r['labels']}")
     st.subheader("Feature importance"); imp = pd.DataFrame(load("insights.json")["importance"]).set_index("feature")
     st.bar_chart(imp)
 
 with t_data:
-    st.dataframe(pd.DataFrame(r["dataset_health"]), use_container_width=True)
+    st.dataframe(pd.DataFrame(r["dataset_health"]), width="stretch")
     st.write(f"Events used: **{r['n_events']}** · sampling: {r['sampling']}")
     st.info(f"Reference comparison: {r['reference_comparison']['status']} · External evaluation: {r['external_evaluation']['status']}")
 
