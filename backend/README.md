@@ -1,5 +1,23 @@
 # GiriRaksha backend (model + Streamlit + data contract)
 
+## Responsibilities and flow
+
+This folder contains the data pipeline, FastAPI service, Streamlit model
+console, weather provider integration, server-side Gemini integration and
+generated JSON contract used by the Next.js frontend.
+
+```text
+data/raw
+  -> data/preprocessed
+  -> pipeline.py
+  -> data/analysis + static/api
+  -> api.py
+  -> frontend/src/lib/model.ts
+```
+
+See [../docs/PROJECT_STRUCTURE.md](../docs/PROJECT_STRUCTURE.md) for the
+complete repository map and team ownership.
+
 Pipeline: ingest -> terrain + rainfall features -> presence-background labels -> Logistic Regression / Random Forest (/ XGBoost if installed) with spatial-block CV -> JSON exports in `static/api/`.
 The frontend reads ONLY those JSON files. Without real data it runs in `demo_synthetic` mode, and every export says so. Nothing in demo mode is a real risk value.
 
@@ -143,6 +161,63 @@ https://<api-host>/api/locations
 The API enables CORS for the frontend. For a restricted production
 deployment, change `allow_origins=["*"]` in `backend/api.py` to the exact
 frontend origin before deploying.
+
+### Real-time weather and Gemini configuration
+
+Create `backend/.env` locally. Never commit it:
+
+```env
+GEMINI_API_KEY=your_server_only_key
+GEMINI_MODEL=gemini-3.8-flash
+WEATHER_CACHE_TTL_SECONDS=600
+ALLOWED_ORIGINS=http://localhost:3000
+```
+
+`GEMINI_MODEL` must be a model currently enabled for the key. The repository
+checks the key only on the backend; it is never returned by an endpoint or
+exposed through a `NEXT_PUBLIC_` variable. If Gemini is unavailable, the
+insights endpoint returns a deterministic, evidence-limited fallback.
+
+Current real-time endpoints:
+
+| Endpoint | Purpose |
+| --- | --- |
+| `/api/location/{slug}/weather` | Open-Meteo current and forecast data |
+| `/api/location/{slug}/context` | Weather plus terrain/rainfall/model context |
+| `/api/location/{slug}/insights` | Safe fallback insight |
+| `/api/location/{slug}/insights/generate` | Gemini insight with validated fallback |
+
+The rule-engine and notification boundaries intentionally remain disabled until
+thresholds have regional scientific validation and expert review.
+
+## Concepts implemented in the backend
+
+### Big-data processing
+
+- Multi-source ingestion from event inventories, terrain tables, rainfall
+  windows and administrative boundaries.
+- Spatial grid generation and bounding-box filtering for Kerala.
+- Temporal aggregation into 1-, 3-, 7- and 15-day rainfall windows.
+- Spatial-block cross-validation to limit spatial leakage.
+- Cached provider retrieval with source and freshness metadata.
+
+### Data mining
+
+- Presence/background label preparation.
+- Logistic Regression baseline and Random Forest candidate model.
+- Relative risk-class ranking using percentile bands.
+- Duplicate event collapse across overlapping inventories.
+- Feature importance and explainability exports.
+
+### Data analytics
+
+- Dataset health and pipeline-stage reports.
+- Location-level terrain, rainfall, exposure and history summaries.
+- Model metric exports where the input labels support evaluation.
+- API-ready JSON for public dashboards, research views and reports.
+
+The current generated exports may contain synthetic or static demo values.
+They are not official warnings or validated operational predictions.
 
 ### Deploy Next.js on Vercel
 

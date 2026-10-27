@@ -12,13 +12,13 @@ export function DemoBanner() {
   return (
     <aside
       aria-label="Academic prototype notice"
-      className="bg-[#F3F5F3] border-b border-[#E1E6E1] text-[#526056] text-xs py-2 px-4 transition-colors"
+      className="bg-[#fff8df] border-b border-[#f2c94c]/40 text-[#526056] text-xs py-2.5 px-4 transition-colors"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Info className="w-4 h-4 text-[#247343] shrink-0" />
           <p className="text-xs">
-            <strong className="font-semibold text-[#202923]">GiriRaksha Notice:</strong> Public landslide risk awareness platform for Kerala. Information displayed is for risk awareness and does not replace official emergency advisories.
+            <strong className="font-semibold text-[#202923]">GiriRaksha notice:</strong> Risk awareness for Kerala communities. Always follow official emergency advisories.
           </p>
         </div>
         <div className="flex items-center gap-4 text-xs shrink-0">

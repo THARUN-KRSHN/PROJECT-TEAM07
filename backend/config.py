@@ -1,7 +1,9 @@
 """GiriRaksha backend configuration."""
 from pathlib import Path
+from dotenv import load_dotenv
 
 ROOT = Path(__file__).parent
+load_dotenv(ROOT / ".env")
 RAW = ROOT / "data" / "raw"          # drop real downloads here
 API_DIR = ROOT / "static" / "api"    # JSON the frontend reads (served by Streamlit static serving)
 

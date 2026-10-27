@@ -6,10 +6,12 @@
   --foreground: #202923;
   --forest-green: #247343;
   --forest-green-hover: #1e5e37;
+  --sun-yellow: #f2c94c;
+  --sun-yellow-soft: #fff8df;
   --charcoal: #202923;
   --charcoal-muted: #526056;
-  --soft-grey: #f3f5f3;
-  --border-grey: #e1e6e1;
+  --soft-grey: #f6f8f5;
+  --border-grey: #e6ebe5;
 }
 
 * {
@@ -24,14 +26,15 @@ html {
 body {
   background-color: #ffffff;
   color: #202923;
-  font-family: "Poppins", var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6, .brand-font {
-  font-family: "Charles Wright Singapore Regular", "Charles Wright", "Poppins", sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 button, input, textarea, select {
@@ -118,11 +121,26 @@ button, input, textarea, select {
 .ui-panel {
   background: #ffffff;
   border: 1px solid #e1e6e1;
+  border-radius: 18px;
 }
 
 .ui-card-subtle {
   background: #f3f5f3;
   border: 1px solid #e1e6e1;
+  border-radius: 18px;
+}
+
+/* Shared visual language: calm surfaces, generous spacing, and restrained depth. */
+.rounded-lg { border-radius: 14px; }
+.rounded-xl { border-radius: 18px; }
+.shadow-lg, .shadow-xl { box-shadow: 0 12px 30px rgba(32, 41, 35, 0.10) !important; }
+.border-\[\#E1E6E1\] { border-color: var(--border-grey) !important; }
+.bg-\[\#F3F5F3\] { background-color: var(--soft-grey) !important; }
+.text-\[\#526056\] { color: #667268 !important; }
+
+::selection {
+  background: var(--sun-yellow);
+  color: var(--charcoal);
 }
 
 img {

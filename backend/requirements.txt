@@ -6,6 +6,8 @@ scipy>=1.11
 pydeck>=0.9
 fastapi>=0.110
 uvicorn>=0.29
+google-genai>=1.0
+python-dotenv>=1.0
 # Optional, only needed when you load real rasters / boundaries:
 # rasterio
 # geopandas

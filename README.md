@@ -144,6 +144,58 @@ npm run build
 
 The prototype uses curated local mock data and does not require a backend, database or API key. The map uses OpenTopoMap terrain tiles, Esri satellite imagery and OpenStreetMap tiles; location search uses the public Nominatim service and has a local fallback.
 
+## Project analysis guide
+
+The repository is arranged around the data-to-product flow:
+
+1. Source files enter `backend/data/raw`.
+2. Normalized and quality-checked intermediates belong in
+   `backend/data/preprocessed`.
+3. `backend/pipeline.py` performs feature engineering, label preparation,
+   model training, spatial validation and JSON export.
+4. Reproducible metrics, feature studies and explainability artifacts belong in
+   `backend/data/analysis`.
+5. Generated JSON under `backend/static/api` is the backend/frontend contract.
+6. FastAPI exposes the contract and live weather/AI routes.
+7. Next.js consumes those routes through `frontend/src/lib/model.ts` and renders
+   the public map, location dossiers and research views.
+
+See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for the folder guide,
+data lineage, role ownership, branch names and the concepts used in the
+project.
+
+### Concepts and where they are used
+
+**Big-data processing:** multi-source ingestion, schema normalization,
+geospatial grids, spatial filtering, rolling temporal windows, provenance
+metadata, staged pipeline exports, API caching and spatial-block validation.
+These are implemented in `backend/pipeline.py`, `backend/config.py`,
+`backend/weather.py` and the generated API contract.
+
+**Data mining:** Logistic Regression and Random Forest classification,
+presence/background labels, duplicate-event consolidation, feature comparison,
+permutation importance and SHAP-style attribution. These are used by the
+training/export pipeline and the authenticated Insights and Research routes.
+
+**Data analytics:** descriptive terrain/rainfall summaries, risk-class
+distributions, location drill-downs, forecast-versus-history comparisons,
+freshness/data-quality indicators and interactive dashboard/report views.
+These are exposed through the FastAPI JSON endpoints and the Next.js pages.
+
+### Team contribution branches
+
+| Contributor | Responsibility | Branch |
+| --- | --- | --- |
+| Edwin Biju | Frontend Development & UI/UX | `role/edwin-frontend-ui` |
+| Richard Robinson | GIS, Data Pipeline & Quality Assurance | `role/richard-gis-quality` |
+| Ruthurag Mohan | Weather Integration, Gemini AI & Alerts | `role/ruthurag-weather-ai` |
+| Tharun Krishna C U | Backend Development & Database | `role/tharun-backend-database` |
+| Udhay Jose M | Data Science & Machine Learning | `role/udhay-data-science` |
+
+The role branches are contribution views based on the complete `main` branch.
+They retain shared runtime dependencies so a branch can be checked out and
+understood without deleting another contributor's code.
+
 ## Design system and accessibility
 
 - Primary brand asset: `frontend/public/logo.png`

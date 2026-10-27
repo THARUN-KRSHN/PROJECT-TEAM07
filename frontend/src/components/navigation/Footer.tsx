@@ -11,20 +11,20 @@ export function Footer() {
 
   return (
     <>
-      <footer className="border-t border-[#E1E6E1] bg-[#F3F5F3] text-[#526056] mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <footer className="border-t border-[#E1E6E1] bg-white text-[#526056] mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Column 1: Brand & Purpose */}
-            <div className="lg:col-span-2 space-y-3">
+            <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-white border border-[#E1E6E1] flex items-center justify-center overflow-hidden">
+                <div className="w-9 h-9 rounded-xl bg-[#fff8df] border border-[#f2c94c]/40 flex items-center justify-center overflow-hidden">
                   <Image src="/logo.png" alt="" width={32} height={32} className="h-full w-full object-contain" />
                 </div>
                 <span className="text-xl font-bold tracking-tight text-[#202923]">
                   Giri<span className="text-[#247343]">Raksha</span>
                 </span>
               </div>
-              <p className="text-sm text-[#526056] leading-relaxed max-w-sm">
+              <p className="text-sm text-[#526056] leading-7 max-w-sm">
                 Landslide risk awareness platform for the people of Kerala. Helping citizens understand local risk easily and prepare safely before and during heavy monsoon rainfall.
               </p>
               <div className="pt-2 text-xs text-[#526056]">
@@ -35,7 +35,7 @@ export function Footer() {
 
             {/* Column 2: Public Navigation */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#202923] mb-3">
+              <h4 className="text-sm font-bold text-[#202923] mb-4">
                 Public Website
               </h4>
               <ul className="space-y-2 text-sm">

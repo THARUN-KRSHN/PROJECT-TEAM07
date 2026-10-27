@@ -3,7 +3,15 @@
 import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { LocationData } from "@/data/mockLocations";
-import { getModelLocation, getModelLocations, toLocationData } from "@/lib/model";
+import {
+  getModelInsights,
+  getModelLocation,
+  getModelLocations,
+  getModelWeather,
+  InsightData,
+  toLocationData,
+  WeatherData,
+} from "@/lib/model";
 import { DemoBanner } from "@/components/navigation/DemoBanner";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
@@ -14,7 +22,6 @@ import { useAuth } from "@/lib/authContext";
 import {
   CloudRain,
   Mountain,
-  Users,
   AlertTriangle,
   History,
   MapPin,
@@ -35,6 +42,10 @@ export default function LocationPage({ params }: LocationPageProps) {
   const [location, setLocation] = useState<LocationData | null>(null);
   const [locations, setLocations] = useState<LocationData[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weatherError, setWeatherError] = useState<string | null>(null);
+  const [insights, setInsights] = useState<InsightData | null>(null);
+  const [insightsError, setInsightsError] = useState<string | null>(null);
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
@@ -44,6 +55,12 @@ export default function LocationPage({ params }: LocationPageProps) {
     getModelLocations()
       .then((response) => setLocations(response.locations.map(toLocationData)))
       .catch(() => setLocations([]));
+    getModelWeather(resolvedParams.id)
+      .then(setWeather)
+      .catch((error: Error) => setWeatherError(error.message));
+    getModelInsights(resolvedParams.id)
+      .then(setInsights)
+      .catch((error: Error) => setInsightsError(error.message));
   }, [resolvedParams.id]);
 
   if (loadError) {
@@ -119,6 +136,94 @@ export default function LocationPage({ params }: LocationPageProps) {
                 </div>
               </div>
             </div>
+          </section>
+
+          <section className="bg-white p-6 rounded-xl border border-[#E1E6E1] space-y-4">
+            <div className="flex items-center justify-between border-b border-[#E1E6E1] pb-3">
+              <h2 className="text-base font-bold text-[#202923] flex items-center gap-2">
+                <CloudRain className="w-4 h-4 text-[#247343]" />
+                Weather overview
+              </h2>
+              <span className="text-xs text-[#526056]">
+                {weather ? "Provider forecast" : "Unavailable"}
+              </span>
+            </div>
+            {weather ? (
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="bg-[#F3F5F3] p-3 rounded-lg">
+                    <div className="text-[10px] font-semibold uppercase text-[#526056]">Temperature</div>
+                    <div className="text-xl font-bold">{weather.current.temperature_2m_c ?? "—"}°C</div>
+                  </div>
+                  <div className="bg-[#F3F5F3] p-3 rounded-lg">
+                    <div className="text-[10px] font-semibold uppercase text-[#526056]">Humidity</div>
+                    <div className="text-xl font-bold">{weather.current.relative_humidity_percent ?? "—"}%</div>
+                  </div>
+                  <div className="bg-[#F3F5F3] p-3 rounded-lg">
+                    <div className="text-[10px] font-semibold uppercase text-[#526056]">Precipitation</div>
+                    <div className="text-xl font-bold">{weather.current.precipitation_mm ?? "—"} mm</div>
+                  </div>
+                  <div className="bg-[#F3F5F3] p-3 rounded-lg">
+                    <div className="text-[10px] font-semibold uppercase text-[#526056]">Updated</div>
+                    <div className="text-sm font-bold mt-1">{weather.retrieved_at.slice(0, 16).replace("T", " ")}</div>
+                  </div>
+                </div>
+                <p className="text-xs text-[#526056]">
+                  Forecast data from <a className="text-[#247343] underline" href={weather.source.url} target="_blank" rel="noreferrer">{weather.source.name}</a>.
+                  {" "}{weather.data_quality.note}
+                </p>
+              </>
+            ) : (
+              <p className="text-sm text-[#526056]">
+                {weatherError || "Weather data is loading or temporarily unavailable. Existing risk information remains available."}
+              </p>
+            )}
+          </section>
+
+          <section className="bg-[#fff8df] p-6 rounded-xl border border-[#f2c94c]/50 space-y-4">
+            <div className="flex items-start justify-between gap-4 border-b border-[#f2c94c]/40 pb-3">
+              <div>
+                <h2 className="text-base font-bold text-[#202923] flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-[#247343]" />
+                  <span>Weather and preparedness update</span>
+                </h2>
+                <p className="text-xs text-[#667268] mt-1">
+                  Evidence-based summary for {location.name}
+                </p>
+              </div>
+              {insights?.generation_status && (
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-[#247343] whitespace-nowrap">
+                  {insights.generation_status.startsWith("gemini") ? "AI generated" : "Verified fallback"}
+                </span>
+              )}
+            </div>
+            {insights ? (
+              <>
+                <div className="space-y-2">
+                  <h3 className="text-lg font-bold text-[#202923]">{insights.headline}</h3>
+                  <p className="text-sm text-[#202923] leading-relaxed">{insights.weather_summary}</p>
+                  <p className="text-sm text-[#667268] leading-relaxed">{insights.risk_context_summary}</p>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {insights.preparedness_suggestions.map((suggestion) => (
+                    <div key={suggestion.title} className="bg-white/80 p-3 rounded-lg border border-[#f2c94c]/35">
+                      <div className="text-sm font-semibold text-[#202923]">{suggestion.title}</div>
+                      <p className="text-xs text-[#667268] mt-1 leading-relaxed">{suggestion.description}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-1 text-[11px] text-[#667268]">
+                  <p>{insights.disclaimer}</p>
+                  {insights.limitations.slice(0, 2).map((limitation) => (
+                    <p key={limitation}>• {limitation}</p>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p className="text-sm text-[#667268]">
+                {insightsError || "Preparing a verified summary from the available location data..."}
+              </p>
+            )}
           </section>
 
           {/* Public Plain-Language Explanation */}

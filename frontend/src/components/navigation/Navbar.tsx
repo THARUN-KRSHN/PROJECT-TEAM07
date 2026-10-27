@@ -38,22 +38,22 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#E1E6E1] transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-[#E1E6E1] transition-colors">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[4.5rem] flex items-center justify-between">
         {/* Brand Logo & Name */}
         <Link
           href="/"
           onClick={handleLinkClick}
-          className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#247343] rounded-lg p-1"
+          className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#247343] rounded-lg p-1"
         >
-          <div className="w-9 h-9 rounded-lg bg-[#F3F5F3] border border-[#E1E6E1] flex items-center justify-center overflow-hidden transition-colors">
+          <div className="w-10 h-10 rounded-xl bg-[#fff8df] border border-[#f2c94c]/40 flex items-center justify-center overflow-hidden transition-colors">
             <Image src="/logo.png" alt="" width={36} height={36} className="h-full w-full object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold tracking-tight text-[#202923] flex items-center">
               Giri<span className="text-[#247343]">Raksha</span>
             </span>
-            <span className="text-[10px] uppercase tracking-wider text-[#526056] font-medium -mt-0.5">
+            <span className="text-[10px] uppercase tracking-[0.14em] text-[#526056] font-medium -mt-0.5">
               Kerala Landslide Awareness
             </span>
           </div>
@@ -68,9 +68,9 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-3.5 py-1.5 rounded-md text-sm font-medium transition-colors",
+                  "px-3.5 py-2 rounded-full text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-[#F3F5F3] text-[#247343] font-semibold border border-[#E1E6E1]"
+                      ? "bg-[#247343] text-white font-semibold"
                     : "text-[#526056] hover:text-[#202923] hover:bg-[#F3F5F3]"
                 )}
               >
@@ -85,12 +85,12 @@ export function Navbar() {
               <button
                 onClick={() => setResearchDropdownOpen(!researchDropdownOpen)}
                 className={cn(
-                  "px-3.5 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors",
+                  "px-3.5 py-2 rounded-full text-sm font-medium flex items-center gap-1.5 transition-colors",
                   pathname.startsWith("/insights") ||
                     pathname.startsWith("/pipeline") ||
                     pathname.startsWith("/reports") ||
                     pathname.startsWith("/research")
-                    ? "bg-[#F3F5F3] text-[#247343] font-semibold border border-[#E1E6E1]"
+                    ? "bg-[#247343] text-white font-semibold"
                     : "text-[#526056] hover:text-[#202923] hover:bg-[#F3F5F3]"
                 )}
               >
@@ -145,7 +145,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/map"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-semibold bg-[#247343] hover:bg-[#1E5E37] text-white transition-colors"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold bg-[#247343] hover:bg-[#1E5E37] text-white transition-colors shadow-sm"
           >
             <MapPin className="w-4 h-4" />
             <span>Explore Risk Map</span>
@@ -169,7 +169,7 @@ export function Navbar() {
           ) : (
             <Link
               href="/signin"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md text-sm font-medium border border-[#E1E6E1] text-[#202923] hover:bg-[#F3F5F3] hover:border-[#247343] transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium border border-[#E1E6E1] text-[#202923] hover:bg-[#F3F5F3] hover:border-[#247343] transition-colors"
             >
               <LogIn className="w-4 h-4 text-[#247343]" />
               <span>Sign In</span>

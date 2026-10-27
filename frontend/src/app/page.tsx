@@ -100,7 +100,7 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative isolate overflow-hidden border-b border-[#E1E6E1] py-14 sm:py-20">
+        <section className="relative isolate overflow-hidden border-b border-[#E1E6E1] py-16 sm:py-24 bg-[#fffdf5]">
           <div className="absolute inset-0 -z-10">
             <SafeImage
               src={IMAGES.heroLandscape.url}
@@ -111,27 +111,27 @@ export default function HomePage() {
               sizes="100vw"
               className="object-cover object-center"
             />
-            <div className="absolute inset-0 bg-white/85" />
+            <div className="absolute inset-0 bg-[#fffdf5]/95" />
           </div>
 
-          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/85 border border-[#E1E6E1] text-[#247343] text-xs font-semibold shadow-sm">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 space-y-7">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff8df] border border-[#f2c94c]/50 text-[#247343] text-xs font-semibold">
               <span className="w-2 h-2 rounded-full bg-[#247343]" />
               <span>Landslide Risk Awareness for Kerala</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#202923] leading-tight">
-              Know your area&apos;s landslide risk.
+            <h1 className="max-w-3xl text-4xl sm:text-6xl font-bold tracking-tight text-[#202923] leading-[1.05]">
+              Understand the land around you.
             </h1>
 
-            <p className="text-base sm:text-lg text-[#526056] max-w-2xl mx-auto leading-relaxed">
-              Explore local risk information and stay informed about landslide safety in Kerala&apos;s high-range districts.
+            <p className="text-base sm:text-lg text-[#526056] max-w-xl leading-relaxed">
+              Simple, local landslide risk awareness for Kerala&apos;s communities. Search a place, read the status, and know what to do next.
             </p>
 
             {/* Location Search Bar */}
-            <div className="max-w-xl mx-auto pt-3">
+            <div className="max-w-2xl pt-2">
               <form onSubmit={handleSearchSubmit} className="relative">
-                <div className="flex items-center bg-white border-2 border-[#247343] rounded-lg shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-[#247343]/30">
+                <div className="flex items-center bg-white border border-[#247343] rounded-full shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-[#247343]/30">
                   <div className="pl-4 text-[#526056]">
                     <Search className="w-5 h-5 text-[#247343]" />
                   </div>
@@ -141,11 +141,11 @@ export default function HomePage() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setIsSearching(true)}
                     placeholder="Search a district, Panchayat or place (e.g. Meppadi, Wayanad)..."
-                    className="w-full px-3 py-3 text-sm text-[#202923] placeholder-[#526056] focus:outline-none bg-transparent"
+                    className="w-full px-3 py-3.5 text-sm text-[#202923] placeholder-[#526056] focus:outline-none bg-transparent"
                   />
                   <button
                     type="submit"
-                    className="px-5 py-3 bg-[#247343] hover:bg-[#1E5E37] text-white text-sm font-semibold whitespace-nowrap transition-colors"
+                    className="px-6 py-3.5 bg-[#247343] hover:bg-[#1E5E37] text-white text-sm font-semibold whitespace-nowrap transition-colors"
                   >
                     Search
                   </button>
@@ -188,17 +188,17 @@ export default function HomePage() {
               </form>
 
               {/* Direct Primary Action Link */}
-              <div className="pt-4 flex items-center justify-center gap-3">
+              <div className="pt-4 flex items-center justify-start gap-3">
                 <Link
                   href="/map"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-semibold text-sm bg-[#247343] hover:bg-[#1E5E37] text-white transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm bg-[#247343] hover:bg-[#1E5E37] text-white transition-colors"
                 >
                   <MapPin className="w-4 h-4" />
                   <span>Explore Risk Map</span>
                 </Link>
                 <Link
                   href="/safety"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md font-semibold text-sm bg-white border border-[#E1E6E1] hover:bg-[#F3F5F3] text-[#202923] transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm bg-white border border-[#E1E6E1] hover:bg-[#F3F5F3] text-[#202923] transition-colors"
                 >
                   <span>Safety Guidance</span>
                   <ArrowRight className="w-4 h-4 text-[#526056]" />
@@ -209,10 +209,10 @@ export default function HomePage() {
         </section>
 
         {/* 4 Feature Cards (Section 1 in Plan) */}
-        <section className="py-12 bg-[#F3F5F3] border-b border-[#E1E6E1]">
+        <section className="py-16 bg-[#F6F8F5] border-b border-[#E1E6E1]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="text-center mb-8">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#202923]">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#202923]">
                 Understand landslide risk in your area
               </h2>
               <p className="text-xs sm:text-sm text-[#526056] mt-1">

@@ -73,6 +73,56 @@ export const getModelLocations = () => getJson<LocationsResponse>("locations");
 
 export const getModelLocation = (slug: string) => getJson<ModelLocation>(`location/${slug}`);
 
+export interface WeatherData {
+  source: { name: string; url: string };
+  retrieved_at: string;
+  forecast_issued_at?: string;
+  current: {
+    time?: string;
+    temperature_2m_c?: number;
+    relative_humidity_percent?: number;
+    precipitation_mm?: number;
+    weather_code?: number;
+    label: string;
+  };
+  data_quality: {
+    current_available: boolean;
+    forecast_available: boolean;
+    observations_available: boolean;
+    note: string;
+  };
+}
+
+export const getModelWeather = (slug: string) =>
+  getJson<WeatherData>(`location/${slug}/weather`);
+
+export interface InsightData {
+  location_name: string;
+  generated_at: string;
+  headline: string;
+  weather_summary: string;
+  risk_context_summary: string;
+  preparedness_suggestions: Array<{
+    title: string;
+    description: string;
+    reason: string;
+  }>;
+  data_status: {
+    weather_available: boolean;
+    rainfall_history_available: boolean;
+    terrain_available: boolean;
+    risk_model_available: boolean;
+    official_advisory_available: boolean;
+  };
+  limitations: string[];
+  sources: Array<{ name: string; url: string; retrieved_at?: string }>;
+  disclaimer: string;
+  generation_status?: string;
+}
+
+export const getModelInsights = (slug: string) =>
+  getJson<InsightData>(`location/${slug}/insights`);
+
 export const getModelAnalysis = async (): Promise<ModelAnalysis> => {
   const [research, insights] = await Promise.all([
     getJson<ModelAnalysis>("research"),
