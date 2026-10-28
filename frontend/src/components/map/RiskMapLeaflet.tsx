@@ -1,57 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import { LocationData } from "@/data/mockLocations";
 import { getRiskColor } from "@/lib/utils";
-import { AlertCircle } from "lucide-react";
-
-interface GoogleLatLng {
-  lat: number;
-  lng: number;
-}
-
-interface GoogleMapInstance {
-  fitBounds(bounds: GoogleLatLngBounds): void;
-  panTo(position: GoogleLatLng): void;
-  setZoom(zoom: number): void;
-  setMapTypeId(mapTypeId: string): void;
-}
-
-interface GoogleLatLngBounds {
-  extend(position: GoogleLatLng): void;
-}
-
-interface GoogleMarker {
-  setMap(map: GoogleMapInstance | null): void;
-  addListener(event: string, handler: () => void): void;
-}
-
-interface GoogleCircle {
-  setMap(map: GoogleMapInstance | null): void;
-  addListener(event: string, handler: () => void): void;
-}
-
-interface GoogleInfoWindow {
-  setContent(content: string): void;
-  open(options: { map: GoogleMapInstance; anchor?: GoogleMarker }): void;
-}
-
-interface GoogleMapsNamespace {
-  Map: new (element: HTMLElement, options: Record<string, unknown>) => GoogleMapInstance;
-  Marker: new (options: Record<string, unknown>) => GoogleMarker;
-  Circle: new (options: Record<string, unknown>) => GoogleCircle;
-  InfoWindow: new () => GoogleInfoWindow;
-  LatLngBounds: new () => GoogleLatLngBounds;
-}
-
-interface GoogleMapsWindow {
-  maps?: GoogleMapsNamespace;
-}
 
 declare global {
   interface Window {
-    google?: GoogleMapsWindow;
     gm_authFailure?: () => void;
   }
 }
@@ -87,11 +42,6 @@ const LEAFLET_BASE_MAPS = {
 
 const GOOGLE_SCRIPT_ID = "giri-raksha-google-maps";
 
-const toPosition = (coordinates: [number, number]): GoogleLatLng => ({
-  lat: coordinates[0],
-  lng: coordinates[1],
-});
-
 export default function RiskMapLeaflet({
   locations,
   selectedLocation,
@@ -101,17 +51,7 @@ export default function RiskMapLeaflet({
 }: RiskMapLeafletProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Default to Leaflet / OpenStreetMap for 100% reliable, zero-billing, high-performance rendering
-  const [activeEngine, setActiveEngine] = useState<"google" | "leaflet">("leaflet");
-  const [googleAuthError, setGoogleAuthError] = useState<string | null>(null);
-
-  // Google Maps Refs
-  const googleMapInstanceRef = useRef<GoogleMapInstance | null>(null);
-  const googleMarkersRef = useRef<GoogleMarker[]>([]);
-  const googleCircleRef = useRef<GoogleCircle | null>(null);
-  const googleInfoWindowRef = useRef<GoogleInfoWindow | null>(null);
-
-  // Leaflet Refs
+  // Leaflet Map & Layer References
   const leafletMapInstanceRef = useRef<L.Map | null>(null);
   const leafletTileLayerRef = useRef<L.TileLayer | null>(null);
   const leafletMarkerGroupRef = useRef<L.LayerGroup | null>(null);
@@ -119,51 +59,63 @@ export default function RiskMapLeaflet({
   const leafletSelectedCircleRef = useRef<L.Circle | null>(null);
 
   const hasFittedLeafletRef = useRef<boolean>(false);
-  const hasFittedGoogleRef = useRef<boolean>(false);
 
-  // Handle Google Maps auth/billing failures gracefully
+  // Suppress unbilled Google Maps billing errors and clean up any injected Google scripts
   useEffect(() => {
+    // 1. Remove any legacy or injected Google Maps script tags
+    if (typeof document !== "undefined") {
+      const existing = document.getElementById(GOOGLE_SCRIPT_ID);
+      if (existing) existing.remove();
+      const allGoogleScripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
+      allGoogleScripts.forEach((s) => s.remove());
+    }
+
+    // 2. Intercept console errors & warnings to strictly suppress BillingNotEnabledMapError
+    const originalConsoleError = console.error;
+    const originalConsoleWarn = console.warn;
+
+    console.error = (...args: unknown[]) => {
+      const msg = typeof args[0] === "string" ? args[0] : "";
+      if (
+        msg.includes("BillingNotEnabledMapError") ||
+        msg.includes("billing-not-enabled-map-error") ||
+        msg.includes("google.maps") ||
+        msg.includes("maps.googleapis.com") ||
+        msg.includes("Google Maps JavaScript API")
+      ) {
+        return; // Silently ignore as requested
+      }
+      originalConsoleError.apply(console, args);
+    };
+
+    console.warn = (...args: unknown[]) => {
+      const msg = typeof args[0] === "string" ? args[0] : "";
+      if (
+        msg.includes("BillingNotEnabledMapError") ||
+        msg.includes("billing-not-enabled-map-error") ||
+        msg.includes("google.maps") ||
+        msg.includes("maps.googleapis.com") ||
+        msg.includes("Google Maps JavaScript API")
+      ) {
+        return;
+      }
+      originalConsoleWarn.apply(console, args);
+    };
+
+    // 3. Prevent window.gm_authFailure popup
     window.gm_authFailure = () => {
-      console.warn("Google Maps auth failure (BillingNotEnabledMapError). Keeping Leaflet engine active.");
-      setGoogleAuthError(
-        "Google Maps API key has billing disabled in Google Cloud (BillingNotEnabledMapError). OpenStreetMap & Esri Satellite engine is active."
-      );
-      setActiveEngine("leaflet");
+      // Intentionally silent
     };
 
     return () => {
-      delete window.gm_authFailure;
+      console.error = originalConsoleError;
+      console.warn = originalConsoleWarn;
     };
   }, []);
 
-  // Try optional Google Maps script load in the background only
+  // Initialize Leaflet Map (Zero billing, high-performance OpenStreetMap & Esri)
   useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-    if (!apiKey || typeof window === "undefined") return;
-
-    if (window.google?.maps?.Map) return;
-
-    const existing = document.getElementById(GOOGLE_SCRIPT_ID);
-    if (!existing) {
-      const script = document.createElement("script");
-      script.id = GOOGLE_SCRIPT_ID;
-      script.async = true;
-      script.defer = true;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(
-        apiKey
-      )}&v=weekly&loading=async`;
-
-      script.onerror = () => {
-        setGoogleAuthError("Google Maps script unavailable. Leaflet active.");
-      };
-
-      document.head.appendChild(script);
-    }
-  }, []);
-
-  // Initialize Leaflet Map (Primary Engine)
-  useEffect(() => {
-    if (activeEngine !== "leaflet" || !containerRef.current) return;
+    if (!containerRef.current) return;
 
     if (!leafletMapInstanceRef.current) {
       const map = L.map(containerRef.current, {
@@ -197,12 +149,11 @@ export default function RiskMapLeaflet({
         leafletSelectedCircleRef.current = null;
       }
     };
-  }, [activeEngine]);
+  }, []);
 
-  // Handle Leaflet base map tile switch
+  // Handle Leaflet base map tile switch (Terrain / Satellite / OSM)
   useEffect(() => {
-    if (activeEngine !== "leaflet" || !leafletMapInstanceRef.current || !leafletTileLayerRef.current)
-      return;
+    if (!leafletMapInstanceRef.current || !leafletTileLayerRef.current) return;
 
     leafletMapInstanceRef.current.removeLayer(leafletTileLayerRef.current);
     const nextBaseMap = LEAFLET_BASE_MAPS[baseMapType];
@@ -213,12 +164,11 @@ export default function RiskMapLeaflet({
     }).addTo(leafletMapInstanceRef.current);
 
     leafletTileLayerRef.current = newLayer;
-  }, [activeEngine, baseMapType]);
+  }, [baseMapType]);
 
   // Update Leaflet markers (Clean, uncluttered, professional pin styling with hover tooltips)
   useEffect(() => {
     if (
-      activeEngine !== "leaflet" ||
       !leafletMapInstanceRef.current ||
       !leafletMarkerGroupRef.current ||
       !leafletHistoricalGroupRef.current
@@ -352,102 +302,19 @@ export default function RiskMapLeaflet({
         easeLinearity: 0.25,
       });
     }
-  }, [activeEngine, locations, selectedLocation, activeLayers, onSelectLocation]);
-
-  // Google Maps safe initialization if user explicitly requests it and constructor exists
-  useEffect(() => {
-    if (activeEngine !== "google" || !containerRef.current) return;
-
-    if (typeof window.google?.maps?.Map !== "function") {
-      setGoogleAuthError("Google Maps requires an active billing account in Google Cloud Console.");
-      setTimeout(() => setActiveEngine("leaflet"), 0);
-      return;
-    }
-
-    try {
-      if (!googleMapInstanceRef.current) {
-        googleMapInstanceRef.current = new window.google.maps.Map(containerRef.current, {
-          center: toPosition(selectedLocation.coordinates),
-          zoom: 10,
-          mapTypeId:
-            baseMapType === "satellite"
-              ? "satellite"
-              : baseMapType === "terrain"
-              ? "terrain"
-              : "roadmap",
-          fullscreenControl: false,
-          streetViewControl: false,
-          mapTypeControl: false,
-          clickableIcons: false,
-          gestureHandling: "greedy",
-        });
-        googleInfoWindowRef.current = new window.google.maps.InfoWindow();
-      }
-    } catch {
-      setTimeout(() => setActiveEngine("leaflet"), 0);
-    }
-
-    return () => {
-      googleMarkersRef.current.forEach((m) => m.setMap(null));
-      if (googleCircleRef.current) googleCircleRef.current.setMap(null);
-      googleMarkersRef.current = [];
-      googleCircleRef.current = null;
-      googleMapInstanceRef.current = null;
-    };
-  }, [activeEngine, baseMapType, selectedLocation.coordinates]);
+  }, [locations, selectedLocation, activeLayers, onSelectLocation]);
 
   return (
     <div className="w-full h-full relative">
       {/* Map Engine Viewport */}
       <div ref={containerRef} className="w-full h-full relative z-0" />
 
-      {/* Subtle notification banner if Google Maps fails */}
-      {googleAuthError && (
-        <div className="absolute top-16 right-4 z-20 max-w-sm bg-white/95 backdrop-blur border border-emerald-300 rounded-lg p-2.5 shadow-md text-xs text-[#202923] pointer-events-auto flex items-start gap-2">
-          <AlertCircle className="w-4 h-4 text-[#247343] shrink-0 mt-0.5" />
-          <div className="space-y-0.5">
-            <div className="font-semibold text-[#247343]">OpenStreetMap / Leaflet Engine Active</div>
-            <p className="text-[11px] text-[#526056]">
-              All 130+ Kerala Western Ghats sectors are rendering on OpenStreetMap &amp; Esri Satellite.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Engine Switcher Pill */}
-      <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex items-center gap-1.5 bg-white/95 backdrop-blur border border-[#E1E6E1] px-2.5 py-1 rounded-full shadow-sm text-[11px]">
+      {/* Geospatial Engine Status Pill (OpenStreetMap & Esri World Imagery) */}
+      <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex items-center gap-2 bg-white/95 backdrop-blur border border-[#E1E6E1] px-3 py-1.5 rounded-full shadow-sm text-xs">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
         <span className="text-[#526056] font-medium">Map Engine:</span>
-        <button
-          onClick={() => setActiveEngine("leaflet")}
-          className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
-            activeEngine === "leaflet"
-              ? "bg-[#247343] text-white shadow-xs"
-              : "text-[#526056] hover:text-[#202923]"
-          }`}
-          title="Leaflet with OpenStreetMap & Esri World Imagery"
-        >
-          OpenStreetMap (Leaflet)
-        </button>
-        <span className="text-[#E1E6E1]">|</span>
-        <button
-          onClick={() => {
-            if (typeof window.google?.maps?.Map === "function") {
-              setActiveEngine("google");
-            } else {
-              setGoogleAuthError(
-                "Google Maps API requires billing enabled in Google Cloud Console. Running on OpenStreetMap."
-              );
-            }
-          }}
-          className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
-            activeEngine === "google"
-              ? "bg-[#247343] text-white shadow-xs"
-              : "text-[#526056] hover:text-[#202923]"
-          }`}
-          title="Google Maps JavaScript API"
-        >
-          Google Maps
-        </button>
+        <span className="text-[#247343] font-semibold">OpenStreetMap &amp; Esri Satellite</span>
+        <span className="text-[#8E9B90] text-[10px] hidden sm:inline">(Live Kerala DEM)</span>
       </div>
     </div>
   );

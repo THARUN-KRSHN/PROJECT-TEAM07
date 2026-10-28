@@ -422,7 +422,7 @@ response = model.generate_content(
     mockupDisplay: {
       type: "gis_mission_control",
       badgeText: "Enterprise Mission Control: 5-Tier Early Warning",
-      statusSummary: "Leaflet & Google Maps Engine • Real-time Multi-Agency Dispatch.",
+      statusSummary: "Leaflet & Esri Geospatial Engine • Real-time Multi-Agency Dispatch.",
     },
     technicalPillars: [
       {
@@ -443,7 +443,7 @@ export const toRiskLevel = (score: number): RiskLevel => {
           { label: "Platform Tech Stack", value: "Next.js 16 + FastAPI" },
         ],
         keyHighlights: [
-          "Interactive Leaflet & Google Maps tiles with sub-second marker rendering.",
+          "Interactive Leaflet & Esri World Imagery tiles with sub-second marker rendering.",
           "Printable PDF & PNG downloadable risk dossiers for district emergency operations.",
           "Built-in emergency dispatch integration with National (112) & State (1077/1070) helplines.",
         ],

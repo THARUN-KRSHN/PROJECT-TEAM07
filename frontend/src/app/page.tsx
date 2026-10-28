@@ -90,11 +90,11 @@ export default function HomePage() {
 
   const filteredLocations = searchQuery.trim()
     ? locations.filter(
-        (loc) =>
-          loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          loc.district.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          loc.panchayat.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      (loc) =>
+        loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        loc.district.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        loc.panchayat.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : [];
 
   const handleSelectLocation = (locId: string) => {
@@ -223,7 +223,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-center gap-1.5 opacity-85 hover:opacity-100 transition-opacity hidden md:flex">
                   <Activity className="w-3.5 h-3.5 text-emerald-300" />
-                  <span>CUSAT AI Lab</span>
+                  <span>CHRIST AI Lab</span>
                 </div>
               </div>
             </div>
@@ -295,13 +295,12 @@ export default function HomePage() {
                             </div>
                           </div>
                           <span
-                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
-                              loc.riskLevel === "VERY HIGH" || loc.riskLevel === "HIGH"
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${loc.riskLevel === "VERY HIGH" || loc.riskLevel === "HIGH"
                                 ? "bg-red-50 text-red-700 border-red-200"
                                 : loc.riskLevel === "MODERATE"
-                                ? "bg-amber-50 text-amber-700 border-amber-200"
-                                : "bg-emerald-50 text-emerald-700 border-emerald-200"
-                            }`}
+                                  ? "bg-amber-50 text-amber-700 border-amber-200"
+                                  : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                              }`}
                           >
                             {loc.riskLevel}
                           </span>
@@ -328,9 +327,8 @@ export default function HomePage() {
                 className="px-3 py-1 rounded-full bg-[#F2F5F2] hover:bg-[#EAF5EE] border border-[#E1E8E2] text-[#202923] hover:text-[#247343] transition-all text-xs font-medium cursor-pointer flex items-center gap-1.5 shadow-2xs"
               >
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    spot.risk === "VERY HIGH" || spot.risk === "HIGH" ? "bg-red-500" : "bg-emerald-500"
-                  }`}
+                  className={`w-1.5 h-1.5 rounded-full ${spot.risk === "VERY HIGH" || spot.risk === "HIGH" ? "bg-red-500" : "bg-emerald-500"
+                    }`}
                 />
                 <span>{spot.name}</span>
               </button>
