@@ -41,6 +41,10 @@ button, input, textarea, select {
   font: inherit;
 }
 
+.font-display {
+  font-family: 'Cormorant Garamond', Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

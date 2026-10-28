@@ -11,16 +11,16 @@ export function Footer() {
 
   return (
     <>
-      <footer className="border-t border-[#E1E6E1] bg-white text-[#526056] mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <footer className="w-full max-w-6xl mx-auto mt-auto mb-3 sm:mb-6">
+        <div className="rounded-3xl sm:rounded-[2rem] bg-white border border-[#E1E8E2] text-[#526056] p-6 sm:p-10 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Column 1: Brand & Purpose */}
-            <div className="lg:col-span-2 space-y-4">
+            <div className="lg:col-span-2 space-y-3.5">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#fff8df] border border-[#f2c94c]/40 flex items-center justify-center overflow-hidden">
-                  <Image src="/logo.png" alt="" width={32} height={32} className="h-full w-full object-contain" />
+                <div className="w-8 h-8 rounded-xl bg-[#1B432E] text-white flex items-center justify-center overflow-hidden shadow-xs">
+                  <Image src="/logo.png" alt="" width={22} height={22} className="h-5 w-5 object-contain brightness-0 invert" />
                 </div>
-                <span className="text-xl font-bold tracking-tight text-[#202923]">
+                <span className="text-lg font-bold tracking-tight text-[#1B3624]">
                   Giri<span className="text-[#247343]">Raksha</span>
                 </span>
               </div>

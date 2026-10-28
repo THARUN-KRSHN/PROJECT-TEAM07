@@ -43,9 +43,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+          rel="stylesheet"
+        />
         <link rel="preconnect" href="https://images.unsplash.com" />
       </head>
-      <body className="bg-white text-[#202923] min-h-screen selection:bg-[#247343] selection:text-white antialiased">
+      <body className="bg-white text-[#202923] min-h-screen selection:bg-[#247343] selection:text-white antialiased font-sans">
         <AuthProvider>
           <IntroScreen />
           {children}
