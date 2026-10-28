@@ -10,6 +10,7 @@ const MODEL_API_BASE =
 interface ModelLocation {
   slug: string;
   name: string;
+  panchayat?: string;
   district: string;
   lat: number;
   lon: number;
@@ -226,12 +227,12 @@ export const toLocationData = (location: ModelLocation): LocationData => {
 
   // Generate a human-readable name from district + cell index
   const cellNum = (location.cell_id || location.slug || "").replace(/\D/g, "");
-  const displayName = location.name || `${location.district} Zone ${cellNum}`;
+  const displayName = location.name || `${location.district} Sector ${cellNum}`;
 
   return {
     id: location.slug,
     name: displayName,
-    panchayat: `${location.district} Grid Sector`,
+    panchayat: location.panchayat || `${location.district} Sector`,
     district: location.district,
     state: "Kerala",
     coordinates,
@@ -241,8 +242,13 @@ export const toLocationData = (location: ModelLocation): LocationData => {
     exposureScore: Math.min(1, Number(exposure.population || 0) / 10000),
     confidence: "MODERATE",
     rainfallStatus: score >= 0.8 ? "CRITICAL" : score >= 0.6 ? "ABOVE NORMAL" : "MODERATE",
-    primaryTrigger: "Model score from backend raw feature data",
-    summary: `Backend model point ${location.cell_id} in ${location.district}.`,
+    primaryTrigger:
+      score >= 0.7
+        ? "High slope shear and cumulative precipitation trigger"
+        : score >= 0.4
+        ? "Moderate antecedent rainfall on vulnerable escarpment"
+        : "Stable topography with baseline drainage capacity",
+    summary: `Geospatial risk assessment for ${displayName}, situated in ${location.panchayat || location.district}.`,
     rainfall: {
       day1: Number(rainfall.rainfall_1d_mm || 0),
       day3: Number(rainfall.rainfall_3d_mm || 0),

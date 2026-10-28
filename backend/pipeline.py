@@ -259,11 +259,12 @@ def run() -> dict:
     for i, r in df.iterrows():
         slug = str(r.cell_id).lower()
         district = str(r.get("district", "Kerala Western Ghats"))
-        name = f"{district} {r.cell_id}"
+        name = str(r.get("name", f"{district} {r.cell_id}"))
+        panchayat = str(r.get("panchayat", district))
         lat, lon = float(r.latitude), float(r.longitude)
         r = df.iloc[i]
         near = ev[_hav(lat, lon, ev.lat.values, ev.lon.values) <= C.NEIGHBOUR_KM] if len(ev) else ev
-        card = dict(slug=slug, name=name, district=district, lat=lat, lon=lon, cell_id=r.cell_id, risk_class=int(r.risk_class),
+        card = dict(slug=slug, name=name, panchayat=panchayat, district=district, lat=lat, lon=lon, cell_id=r.cell_id, risk_class=int(r.risk_class),
                     risk_label=r.risk_label, score=round(float(r.score), 4))
         locs.append(card)
         _dump(f"location/{slug}.json", dict(meta=meta, **card,

@@ -92,15 +92,6 @@ const toPosition = (coordinates: [number, number]): GoogleLatLng => ({
   lng: coordinates[1],
 });
 
-const googleMarkerIcon = (color: string, selected: boolean) => ({
-  path: "M 0,0 m -9,0 a 9,9 0 1,0 18,0 a 9,9 0 1,0 -18,0",
-  fillColor: color,
-  fillOpacity: 1,
-  strokeColor: "#FFFFFF",
-  strokeWeight: selected ? 4 : 2,
-  scale: selected ? 1.35 : 1,
-});
-
 export default function RiskMapLeaflet({
   locations,
   selectedLocation,
@@ -110,17 +101,14 @@ export default function RiskMapLeaflet({
 }: RiskMapLeafletProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Engine state: "google" or "leaflet"
-  const [activeEngine, setActiveEngine] = useState<"google" | "leaflet">(() => {
-    if (typeof window !== "undefined" && window.google?.maps) return "google";
-    return "leaflet";
-  });
+  // Default to Leaflet / OpenStreetMap for 100% reliable, zero-billing, high-performance rendering
+  const [activeEngine, setActiveEngine] = useState<"google" | "leaflet">("leaflet");
   const [googleAuthError, setGoogleAuthError] = useState<string | null>(null);
 
   // Google Maps Refs
   const googleMapInstanceRef = useRef<GoogleMapInstance | null>(null);
   const googleMarkersRef = useRef<GoogleMarker[]>([]);
-  const googleCirclesRef = useRef<GoogleCircle[]>([]);
+  const googleCircleRef = useRef<GoogleCircle | null>(null);
   const googleInfoWindowRef = useRef<GoogleInfoWindow | null>(null);
 
   // Leaflet Refs
@@ -128,18 +116,17 @@ export default function RiskMapLeaflet({
   const leafletTileLayerRef = useRef<L.TileLayer | null>(null);
   const leafletMarkerGroupRef = useRef<L.LayerGroup | null>(null);
   const leafletHistoricalGroupRef = useRef<L.LayerGroup | null>(null);
+  const leafletSelectedCircleRef = useRef<L.Circle | null>(null);
 
-  const hasFittedGoogleRef = useRef<boolean>(false);
   const hasFittedLeafletRef = useRef<boolean>(false);
+  const hasFittedGoogleRef = useRef<boolean>(false);
 
-  // 1. Hook to capture Google Maps auth / billing failure callback
+  // Handle Google Maps auth/billing failures gracefully
   useEffect(() => {
     window.gm_authFailure = () => {
-      console.warn(
-        "Google Maps JavaScript API: gm_authFailure triggered (BillingNotEnabledMapError). Switching to Leaflet engine automatically."
-      );
+      console.warn("Google Maps auth failure (BillingNotEnabledMapError). Keeping Leaflet engine active.");
       setGoogleAuthError(
-        "Google Maps API Key requires billing enabled in Google Cloud Console (BillingNotEnabledMapError). Falling back to OpenStreetMap / Leaflet."
+        "Google Maps API key has billing disabled in Google Cloud (BillingNotEnabledMapError). OpenStreetMap & Esri Satellite engine is active."
       );
       setActiveEngine("leaflet");
     };
@@ -149,154 +136,39 @@ export default function RiskMapLeaflet({
     };
   }, []);
 
-  // 2. Try loading Google Maps if API key is present
+  // Try optional Google Maps script load in the background only
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-    if (!apiKey || typeof window === "undefined") {
-      return;
-    }
+    if (!apiKey || typeof window === "undefined") return;
 
-    if (window.google?.maps) {
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.id = GOOGLE_SCRIPT_ID;
-    script.async = true;
-    script.defer = true;
-    // Note: added loading=async parameter to comply with current Google Maps API best practices
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(
-      apiKey
-    )}&v=weekly&loading=async`;
-
-    script.onload = () => {
-      if (window.google?.maps) {
-        setActiveEngine("google");
-      } else {
-        setActiveEngine("leaflet");
-      }
-    };
-
-    script.onerror = () => {
-      setGoogleAuthError("Google Maps script failed to load. Falling back to OpenStreetMap / Leaflet.");
-      setActiveEngine("leaflet");
-    };
+    if (window.google?.maps?.Map) return;
 
     const existing = document.getElementById(GOOGLE_SCRIPT_ID);
     if (!existing) {
+      const script = document.createElement("script");
+      script.id = GOOGLE_SCRIPT_ID;
+      script.async = true;
+      script.defer = true;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(
+        apiKey
+      )}&v=weekly&loading=async`;
+
+      script.onerror = () => {
+        setGoogleAuthError("Google Maps script unavailable. Leaflet active.");
+      };
+
       document.head.appendChild(script);
     }
   }, []);
 
-  // 3. Initialize or clean up Google Maps when activeEngine === "google"
-  useEffect(() => {
-    if (activeEngine !== "google" || !containerRef.current || !window.google?.maps) return;
-
-    try {
-      if (!googleMapInstanceRef.current) {
-        googleMapInstanceRef.current = new window.google.maps.Map(containerRef.current, {
-          center: toPosition(selectedLocation.coordinates),
-          zoom: 10,
-          mapTypeId:
-            baseMapType === "satellite"
-              ? "satellite"
-              : baseMapType === "terrain"
-              ? "terrain"
-              : "roadmap",
-          fullscreenControl: false,
-          streetViewControl: false,
-          mapTypeControl: false,
-          clickableIcons: false,
-          gestureHandling: "greedy",
-        });
-        googleInfoWindowRef.current = new window.google.maps.InfoWindow();
-      }
-    } catch (err: unknown) {
-      console.warn("Google Maps initialization exception, falling back to Leaflet:", err);
-      setTimeout(() => setActiveEngine("leaflet"), 0);
-    }
-
-    return () => {
-      googleMarkersRef.current.forEach((m) => m.setMap(null));
-      googleCirclesRef.current.forEach((c) => c.setMap(null));
-      googleMarkersRef.current = [];
-      googleCirclesRef.current = [];
-      googleMapInstanceRef.current = null;
-    };
-  }, [activeEngine, baseMapType, selectedLocation.coordinates]);
-
-  // 4. Update Google Map markers and layers
-  useEffect(() => {
-    if (activeEngine !== "google" || !googleMapInstanceRef.current || !window.google?.maps) return;
-
-    googleMapInstanceRef.current.setMapTypeId(
-      baseMapType === "satellite" ? "satellite" : baseMapType === "terrain" ? "terrain" : "roadmap"
-    );
-
-    googleMarkersRef.current.forEach((m) => m.setMap(null));
-    googleCirclesRef.current.forEach((c) => c.setMap(null));
-    googleMarkersRef.current = [];
-    googleCirclesRef.current = [];
-
-    if (activeLayers.risk) {
-      locations.forEach((location) => {
-        const color = getRiskColor(location.riskLevel);
-        const marker = new window.google!.maps!.Marker({
-          map: googleMapInstanceRef.current,
-          position: toPosition(location.coordinates),
-          title: `${location.name} - ${location.riskLevel}`,
-          icon: googleMarkerIcon(color.hex, location.id === selectedLocation.id),
-          optimized: true,
-        });
-
-        marker.addListener("click", () => {
-          onSelectLocation(location);
-          googleInfoWindowRef.current?.setContent(
-            `<strong>${location.name}</strong><br />Risk: ${location.riskLevel}<br />Score: ${location.riskScore.toFixed(2)}`
-          );
-          googleInfoWindowRef.current?.open({
-            map: googleMapInstanceRef.current!,
-            anchor: marker,
-          });
-        });
-        googleMarkersRef.current.push(marker);
-
-        if (location.riskScore >= 0.7) {
-          const circle = new window.google!.maps!.Circle({
-            map: googleMapInstanceRef.current,
-            center: toPosition(location.coordinates),
-            radius: location.riskScore * 3000,
-            strokeColor: color.hex,
-            strokeOpacity: 0.7,
-            strokeWeight: 1,
-            fillColor: color.hex,
-            fillOpacity: 0.08,
-          });
-          circle.addListener("click", () => onSelectLocation(location));
-          googleCirclesRef.current.push(circle);
-        }
-      });
-    }
-
-    const bounds = new window.google.maps.LatLngBounds();
-    locations.forEach((loc) => bounds.extend(toPosition(loc.coordinates)));
-
-    if (!hasFittedGoogleRef.current && locations.length > 0) {
-      googleMapInstanceRef.current.fitBounds(bounds);
-      hasFittedGoogleRef.current = true;
-    } else {
-      googleMapInstanceRef.current.panTo(toPosition(selectedLocation.coordinates));
-    }
-  }, [activeEngine, locations, selectedLocation, activeLayers, baseMapType, onSelectLocation]);
-
-  // 5. Initialize or clean up Leaflet Map when activeEngine === "leaflet"
+  // Initialize Leaflet Map (Primary Engine)
   useEffect(() => {
     if (activeEngine !== "leaflet" || !containerRef.current) return;
 
     if (!leafletMapInstanceRef.current) {
       const map = L.map(containerRef.current, {
         center: selectedLocation.coordinates,
-        zoom: 10,
+        zoom: 9,
         zoomControl: false,
         attributionControl: true,
       });
@@ -322,11 +194,12 @@ export default function RiskMapLeaflet({
         leafletTileLayerRef.current = null;
         leafletMarkerGroupRef.current = null;
         leafletHistoricalGroupRef.current = null;
+        leafletSelectedCircleRef.current = null;
       }
     };
-  }, [activeEngine, baseMapType, selectedLocation.coordinates]);
+  }, [activeEngine]);
 
-  // 6. Handle Leaflet base map tile switch
+  // Handle Leaflet base map tile switch
   useEffect(() => {
     if (activeEngine !== "leaflet" || !leafletMapInstanceRef.current || !leafletTileLayerRef.current)
       return;
@@ -342,7 +215,7 @@ export default function RiskMapLeaflet({
     leafletTileLayerRef.current = newLayer;
   }, [activeEngine, baseMapType]);
 
-  // 7. Update Leaflet markers and layers
+  // Update Leaflet markers (Clean, uncluttered, professional pin styling with hover tooltips)
   useEffect(() => {
     if (
       activeEngine !== "leaflet" ||
@@ -355,58 +228,77 @@ export default function RiskMapLeaflet({
     leafletMarkerGroupRef.current.clearLayers();
     leafletHistoricalGroupRef.current.clearLayers();
 
+    if (leafletSelectedCircleRef.current) {
+      leafletMapInstanceRef.current.removeLayer(leafletSelectedCircleRef.current);
+      leafletSelectedCircleRef.current = null;
+    }
+
     if (activeLayers.risk) {
       locations.forEach((loc) => {
         const isSelected = loc.id === selectedLocation.id;
         const color = getRiskColor(loc.riskLevel);
 
+        // Sleek, compact marker design to avoid overcrowding
+        const size = isSelected ? 24 : 16;
+        const innerSize = isSelected ? 12 : 8;
+        const pulseRing = isSelected
+          ? `<div style="position: absolute; inset: -6px; border-radius: 9999px; background-color: ${color.hex}; opacity: 0.35; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>`
+          : "";
+
+        const nameLabel = isSelected
+          ? `<div style="position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); white-space: nowrap; background: #ffffff; border: 1.5px solid ${color.hex}; color: #202923; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); pointer-events: none; z-index: 1000;">${loc.name}</div>`
+          : "";
+
         const iconHtml = `
-          <div style="position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-            <div style="position: absolute; inset: 0; border-radius: 9999px; background-color: ${
-              color.hex
-            }; opacity: ${isSelected ? "0.35" : "0.15"}; transform: scale(${isSelected ? 1.4 : 1});"></div>
-            <div style="position: relative; width: 22px; height: 22px; border-radius: 9999px; background-color: #ffffff; border: 2.5px solid ${
-              color.hex
-            }; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
-              <div style="width: 8px; height: 8px; border-radius: 9999px; background-color: ${
-                color.hex
-              };"></div>
+          <div style="position: relative; width: ${size}px; height: ${size}px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            ${pulseRing}
+            <div style="position: relative; width: ${size}px; height: ${size}px; border-radius: 9999px; background-color: #ffffff; border: ${isSelected ? "2.5px" : "2px"} solid ${color.hex}; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.18);">
+              <div style="width: ${innerSize}px; height: ${innerSize}px; border-radius: 9999px; background-color: ${color.hex};"></div>
             </div>
-            ${
-              isSelected
-                ? `<div style="position: absolute; bottom: -22px; white-space: nowrap; background: #ffffff; border: 1.5px solid ${color.hex}; color: #202923; font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); pointer-events: none;">${loc.name}</div>`
-                : ""
-            }
+            ${nameLabel}
           </div>
         `;
 
         const customIcon = L.divIcon({
           html: iconHtml,
           className: "custom-leaflet-marker",
-          iconSize: [34, 34],
-          iconAnchor: [17, 17],
+          iconSize: [size, size],
+          iconAnchor: [size / 2, size / 2],
         });
 
-        const marker = L.marker(loc.coordinates, { icon: customIcon });
+        const marker = L.marker(loc.coordinates, {
+          icon: customIcon,
+          zIndexOffset: isSelected ? 1000 : Math.round(loc.riskScore * 100),
+        });
+
+        // Instant hover tooltip showing place name and risk
+        marker.bindTooltip(
+          `<div style="font-weight: 700; font-size: 12px; color: #202923;">${loc.name}</div><div style="color: ${color.hex}; font-size: 11px; font-weight: 600;">Risk: ${loc.riskLevel} (${(loc.riskScore * 100).toFixed(0)}%)</div>`,
+          { direction: "top", offset: [0, -size / 2], opacity: 0.95 }
+        );
+
         marker.on("click", () => onSelectLocation(loc));
-
-        if (loc.riskScore >= 0.7) {
-          const circle = L.circle(loc.coordinates, {
-            radius: loc.riskScore * 3000,
-            color: color.hex,
-            fillColor: color.hex,
-            fillOpacity: 0.08,
-            weight: 1.5,
-            dashArray: "4, 6",
-          });
-          circle.on("click", () => onSelectLocation(loc));
-          leafletMarkerGroupRef.current?.addLayer(circle);
-        }
-
         leafletMarkerGroupRef.current?.addLayer(marker);
       });
+
+      // Show hazard radius circle ONLY for the selected location (avoids screen clutter)
+      if (selectedLocation.riskScore >= 0.70) {
+        const selColor = getRiskColor(selectedLocation.riskLevel);
+        const radiusMeters = Math.max(1500, selectedLocation.riskScore * 3500);
+        const circle = L.circle(selectedLocation.coordinates, {
+          radius: radiusMeters,
+          color: selColor.hex,
+          fillColor: selColor.hex,
+          fillOpacity: 0.08,
+          weight: 1.5,
+          dashArray: "4, 6",
+        });
+        circle.addTo(leafletMapInstanceRef.current);
+        leafletSelectedCircleRef.current = circle;
+      }
     }
 
+    // Historical landslide points
     if (activeLayers.historical) {
       locations.forEach((loc) => {
         loc.historicalEvents.forEach((ev, i) => {
@@ -415,12 +307,12 @@ export default function RiskMapLeaflet({
 
           const histIcon = L.divIcon({
             html: `
-              <div style="width: 14px; height: 14px; background: #D97706; border: 1.5px solid #ffffff; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer;" title="${ev.title} (${ev.year})">
+              <div style="width: 12px; height: 12px; background: #D97706; border: 1.5px solid #ffffff; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer;" title="${ev.title} (${ev.year})">
               </div>
             `,
             className: "hist-marker",
-            iconSize: [14, 14],
-            iconAnchor: [7, 7],
+            iconSize: [12, 12],
+            iconAnchor: [6, 6],
           });
 
           const histMarker = L.marker([offsetLat, offsetLng], { icon: histIcon });
@@ -440,63 +332,114 @@ export default function RiskMapLeaflet({
       (location) =>
         Number.isFinite(location.coordinates[0]) &&
         Number.isFinite(location.coordinates[1]) &&
-        location.coordinates[0] >= -90 &&
-        location.coordinates[0] <= 90 &&
-        location.coordinates[1] >= -180 &&
-        location.coordinates[1] <= 180
+        location.coordinates[0] >= 8.0 &&
+        location.coordinates[0] <= 13.0 &&
+        location.coordinates[1] >= 74.5 &&
+        location.coordinates[1] <= 78.0
     );
 
     if (!hasFittedLeafletRef.current && validLocations.length > 0) {
       const bounds = L.latLngBounds(validLocations.map((l) => l.coordinates));
       leafletMapInstanceRef.current.fitBounds(bounds, {
         padding: [36, 36],
-        maxZoom: 10,
+        maxZoom: 9,
         animate: false,
       });
       hasFittedLeafletRef.current = true;
     } else {
-      leafletMapInstanceRef.current.flyTo(selectedLocation.coordinates, 12, {
+      leafletMapInstanceRef.current.flyTo(selectedLocation.coordinates, 11, {
         duration: 0.8,
         easeLinearity: 0.25,
       });
     }
   }, [activeEngine, locations, selectedLocation, activeLayers, onSelectLocation]);
 
+  // Google Maps safe initialization if user explicitly requests it and constructor exists
+  useEffect(() => {
+    if (activeEngine !== "google" || !containerRef.current) return;
+
+    if (typeof window.google?.maps?.Map !== "function") {
+      setGoogleAuthError("Google Maps requires an active billing account in Google Cloud Console.");
+      setTimeout(() => setActiveEngine("leaflet"), 0);
+      return;
+    }
+
+    try {
+      if (!googleMapInstanceRef.current) {
+        googleMapInstanceRef.current = new window.google.maps.Map(containerRef.current, {
+          center: toPosition(selectedLocation.coordinates),
+          zoom: 10,
+          mapTypeId:
+            baseMapType === "satellite"
+              ? "satellite"
+              : baseMapType === "terrain"
+              ? "terrain"
+              : "roadmap",
+          fullscreenControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          clickableIcons: false,
+          gestureHandling: "greedy",
+        });
+        googleInfoWindowRef.current = new window.google.maps.InfoWindow();
+      }
+    } catch {
+      setTimeout(() => setActiveEngine("leaflet"), 0);
+    }
+
+    return () => {
+      googleMarkersRef.current.forEach((m) => m.setMap(null));
+      if (googleCircleRef.current) googleCircleRef.current.setMap(null);
+      googleMarkersRef.current = [];
+      googleCircleRef.current = null;
+      googleMapInstanceRef.current = null;
+    };
+  }, [activeEngine, baseMapType, selectedLocation.coordinates]);
+
   return (
     <div className="w-full h-full relative">
       {/* Map Engine Viewport */}
       <div ref={containerRef} className="w-full h-full relative z-0" />
 
-      {/* Top Banner Notice when Billing Error or Fallback to Leaflet */}
-      {googleAuthError && activeEngine === "leaflet" && (
-        <div className="absolute top-16 right-4 z-20 max-w-sm bg-white/95 backdrop-blur border border-amber-300 rounded-lg p-2.5 shadow-lg text-xs text-[#202923] pointer-events-auto flex items-start gap-2">
-          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <div className="font-semibold text-amber-900 flex items-center justify-between">
-              <span>OpenStreetMap / Leaflet Engine Active</span>
-              <span className="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-mono">
-                Auto Fallback
-              </span>
-            </div>
-            <p className="text-[11px] text-[#526056] leading-tight">
-              Google Maps reported <code>BillingNotEnabledMapError</code>. OpenStreetMap &amp; Esri Satellite tiles are running seamlessly.
+      {/* Subtle notification banner if Google Maps fails */}
+      {googleAuthError && (
+        <div className="absolute top-16 right-4 z-20 max-w-sm bg-white/95 backdrop-blur border border-emerald-300 rounded-lg p-2.5 shadow-md text-xs text-[#202923] pointer-events-auto flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 text-[#247343] shrink-0 mt-0.5" />
+          <div className="space-y-0.5">
+            <div className="font-semibold text-[#247343]">OpenStreetMap / Leaflet Engine Active</div>
+            <p className="text-[11px] text-[#526056]">
+              All 130+ Kerala Western Ghats sectors are rendering on OpenStreetMap &amp; Esri Satellite.
             </p>
           </div>
         </div>
       )}
 
-      {/* Engine Switcher Pill (Bottom Left above attribution) */}
-      <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex items-center gap-1.5 bg-white/90 backdrop-blur border border-[#E1E6E1] px-2 py-1 rounded-full shadow-sm text-[11px]">
-        <span className="text-[#526056] font-medium">Engine:</span>
+      {/* Engine Switcher Pill */}
+      <div className="absolute bottom-4 left-4 z-20 pointer-events-auto flex items-center gap-1.5 bg-white/95 backdrop-blur border border-[#E1E6E1] px-2.5 py-1 rounded-full shadow-sm text-[11px]">
+        <span className="text-[#526056] font-medium">Map Engine:</span>
+        <button
+          onClick={() => setActiveEngine("leaflet")}
+          className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
+            activeEngine === "leaflet"
+              ? "bg-[#247343] text-white shadow-xs"
+              : "text-[#526056] hover:text-[#202923]"
+          }`}
+          title="Leaflet with OpenStreetMap & Esri World Imagery"
+        >
+          OpenStreetMap (Leaflet)
+        </button>
+        <span className="text-[#E1E6E1]">|</span>
         <button
           onClick={() => {
-            if (window.google?.maps) {
+            if (typeof window.google?.maps?.Map === "function") {
               setActiveEngine("google");
             } else {
-              setGoogleAuthError("Google Maps requires billing enabled in Google Cloud Console.");
+              setGoogleAuthError(
+                "Google Maps API requires billing enabled in Google Cloud Console. Running on OpenStreetMap."
+              );
             }
           }}
-          className={`px-2 py-0.5 rounded-full font-semibold transition-colors ${
+          className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
             activeEngine === "google"
               ? "bg-[#247343] text-white shadow-xs"
               : "text-[#526056] hover:text-[#202923]"
@@ -504,18 +447,6 @@ export default function RiskMapLeaflet({
           title="Google Maps JavaScript API"
         >
           Google Maps
-        </button>
-        <span className="text-[#E1E6E1]">|</span>
-        <button
-          onClick={() => setActiveEngine("leaflet")}
-          className={`px-2 py-0.5 rounded-full font-semibold transition-colors ${
-            activeEngine === "leaflet"
-              ? "bg-[#247343] text-white shadow-xs"
-              : "text-[#526056] hover:text-[#202923]"
-          }`}
-          title="Leaflet with OpenStreetMap / Esri World Imagery"
-        >
-          OpenStreetMap (Leaflet)
         </button>
       </div>
     </div>

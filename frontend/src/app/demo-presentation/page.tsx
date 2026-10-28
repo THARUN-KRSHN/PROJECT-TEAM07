@@ -68,54 +68,56 @@ export default function DemoPresentationPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#070D09] text-slate-100">
+    <div className="flex flex-col min-h-screen bg-[#F9FAF8] text-[#202923]">
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
         {/* Breadcrumb & Navigation Header */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#1A2D21]">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E1E6E1]">
+          <div className="flex items-center gap-2 text-xs text-[#526056] flex-wrap">
             <Link
               href="/"
-              className="hover:text-emerald-400 flex items-center gap-1 transition-colors"
+              className="hover:text-[#247343] flex items-center gap-1 transition-colors font-medium"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Home</span>
             </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <span className="text-emerald-400 font-semibold">Demo Presentation</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <span className="text-slate-300">Step {currentStep.stepNumber}: {currentStep.title}</span>
+            <ChevronRight className="w-3.5 h-3.5 text-[#A0ACA2]" />
+            <span className="text-[#247343] font-semibold">Demo Presentation</span>
+            <ChevronRight className="w-3.5 h-3.5 text-[#A0ACA2]" />
+            <span className="text-[#38483D] font-medium">
+              Step {currentStep.stepNumber}: {currentStep.title}
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
               href="/map"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#14231A] hover:bg-[#1C3225] border border-[#23382B] text-xs font-semibold text-emerald-300 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#247343] hover:bg-[#1E5E37] text-white shadow-xs text-xs font-semibold transition-all transform active:scale-95"
             >
-              <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+              <MapPin className="w-3.5 h-3.5 text-white" />
               <span>Open Live GIS Map</span>
             </Link>
             <Link
               href="/research"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#14231A] hover:bg-[#1C3225] border border-[#23382B] text-xs font-semibold text-slate-300 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-[#EEF3EF] border border-[#E1E6E1] text-xs font-semibold text-[#202923] shadow-xs transition-colors"
             >
-              <BarChart3 className="w-3.5 h-3.5 text-emerald-400" />
+              <BarChart3 className="w-3.5 h-3.5 text-[#247343]" />
               <span>Research Metrics</span>
             </Link>
           </div>
         </div>
 
         {/* Hero Pitchdeck Banner */}
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-400 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="space-y-2.5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAF5EE] border border-[#CFE6D6] text-[#1E6738] text-xs font-semibold shadow-xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#247343]" />
             <span>Academic & Technical Pitchdeck Walkthrough</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#1A281E]">
             {currentStep.title}
           </h1>
-          <p className="text-sm sm:text-base text-slate-400 max-w-3xl leading-relaxed">
+          <p className="text-sm sm:text-base text-[#526056] max-w-3xl leading-relaxed">
             {currentStep.subtitle}
           </p>
         </div>
