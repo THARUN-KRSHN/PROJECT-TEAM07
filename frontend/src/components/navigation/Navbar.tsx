@@ -22,6 +22,7 @@ import Image from "next/image";
 const PUBLIC_NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Risk Map", href: "/map" },
+  { label: "Demo Presentation", href: "/demo-presentation" },
   { label: "Safety Guidelines", href: "/safety" },
   { label: "About", href: "/about" },
 ];

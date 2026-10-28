@@ -17,6 +17,7 @@ import {
   ArrowRight,
   AlertTriangle,
   Phone,
+  Play,
 } from "lucide-react";
 import { LocationData } from "@/data/mockLocations";
 import { getModelLocations, toLocationData } from "@/lib/model";
@@ -188,13 +189,21 @@ export default function HomePage() {
               </form>
 
               {/* Direct Primary Action Link */}
-              <div className="pt-4 flex items-center justify-start gap-3">
+              <div className="pt-4 flex flex-wrap items-center justify-start gap-3">
                 <Link
                   href="/map"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm bg-[#247343] hover:bg-[#1E5E37] text-white transition-colors"
                 >
                   <MapPin className="w-4 h-4" />
                   <span>Explore Risk Map</span>
+                </Link>
+                <Link
+                  href="/demo-presentation"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm bg-gradient-to-r from-emerald-600 via-teal-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white shadow-md shadow-emerald-900/10 hover:shadow-lg hover:shadow-emerald-900/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  <div className="w-2 h-2 rounded-full bg-emerald-200 animate-ping" />
+                  <Play className="w-4 h-4 fill-current" />
+                  <span>Demo Presentation</span>
                 </Link>
                 <Link
                   href="/safety"

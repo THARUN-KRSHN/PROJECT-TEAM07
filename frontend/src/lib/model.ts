@@ -152,20 +152,89 @@ const toHistoricalEvents = (location: ModelLocation): HistoricalEvent[] =>
     severity: "MODERATE",
   }));
 
+const KERALA_BOUNDS = {
+  minLat: 8.2,
+  maxLat: 12.8,
+  minLon: 74.8,
+  maxLon: 77.8,
+};
+
+const DISTRICT_FALLBACK_COORDINATES: Record<string, [number, number]> = {
+  wayanad: [11.605, 76.083],
+  malappuram: [11.05, 76.07],
+  kozhikode: [11.258, 75.78],
+  kannur: [11.874, 75.355],
+  kasaragod: [12.5, 75.0],
+  idukki: [9.85, 76.97],
+  pathanamthitta: [9.26, 76.78],
+  alappuzha: [9.49, 76.33],
+  thrissur: [10.53, 76.21],
+  ernakulam: [10.15, 76.47],
+  kollam: [8.89, 76.6],
+  thiruvananthapuram: [8.52, 76.94],
+  palakkad: [10.77, 76.65],
+  kottayam: [9.59, 76.52],
+  vadakara: [11.6, 75.58],
+};
+
+export const normalizeLocationCoordinates = (
+  nameOrLocation: { name?: string; district?: string; lat?: number; lon?: number },
+  fallback: [number, number] = [10.85, 76.24]
+): [number, number] => {
+  const rawLat = Number(nameOrLocation?.lat ?? fallback[0]);
+  const rawLon = Number(nameOrLocation?.lon ?? fallback[1]);
+
+  if (!Number.isFinite(rawLat) || !Number.isFinite(rawLon)) {
+    return fallback;
+  }
+
+  // Accept any coordinate that falls inside the Kerala bounding box
+  const insideKerala =
+    rawLat >= KERALA_BOUNDS.minLat &&
+    rawLat <= KERALA_BOUNDS.maxLat &&
+    rawLon >= KERALA_BOUNDS.minLon &&
+    rawLon <= KERALA_BOUNDS.maxLon;
+
+  if (insideKerala) {
+    return [rawLat, rawLon];
+  }
+
+  // Point is outside Kerala — try district fallback
+  const districtKey = (nameOrLocation?.district || nameOrLocation?.name || "")
+    .toLowerCase()
+    .replace(/[^a-z]/g, "");
+
+  return (
+    DISTRICT_FALLBACK_COORDINATES[districtKey] ||
+    DISTRICT_FALLBACK_COORDINATES[
+      (nameOrLocation?.name || "").toLowerCase().replace(/[^a-z]/g, "")
+    ] ||
+    fallback
+  );
+};
+
 export const toLocationData = (location: ModelLocation): LocationData => {
   const riskLevel = toRiskLevel(location.risk_label, location.score);
   const rainfall = location.rainfall || {};
   const terrain = location.terrain || {};
   const exposure = location.exposure || {};
   const score = Number(location.score || 0);
+  const coordinates = normalizeLocationCoordinates(
+    { name: location.name, district: location.district, lat: location.lat, lon: location.lon },
+    [10.85, 76.24]
+  );
+
+  // Generate a human-readable name from district + cell index
+  const cellNum = (location.cell_id || location.slug || "").replace(/\D/g, "");
+  const displayName = location.name || `${location.district} Zone ${cellNum}`;
 
   return {
     id: location.slug,
-    name: location.name,
-    panchayat: location.cell_id,
+    name: displayName,
+    panchayat: `${location.district} Grid Sector`,
     district: location.district,
     state: "Kerala",
-    coordinates: [location.lat, location.lon],
+    coordinates,
     riskScore: score,
     riskLevel,
     susceptibilityScore: score,

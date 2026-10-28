@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { LocationData } from "@/data/mockLocations";
 import { ModelAnalysis } from "@/lib/model";
@@ -14,6 +14,7 @@ import {
   Shield,
   Lock,
   X,
+  Bell,
 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 
@@ -27,6 +28,38 @@ interface LocationPanelProps {
 export function LocationPanel({ location, analysis, onClose, className = "" }: LocationPanelProps) {
   const { isAuthenticated } = useAuth();
   const riskColor = getRiskColor(location.riskLevel);
+  const [pushEnabled, setPushEnabled] = useState<boolean>(() => {
+    if (typeof window !== "undefined" && "Notification" in window) {
+      return Notification.permission === "granted";
+    }
+    return false;
+  });
+  const [pushMessage, setPushMessage] = useState<string | null>(null);
+
+  const handleTogglePushNotifications = async () => {
+    if (typeof window === "undefined") return;
+
+    if (!("Notification" in window)) {
+      setPushMessage("Browser notifications are unavailable on this device.");
+      return;
+    }
+
+    const permission = Notification.permission === "granted" ? "granted" : await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      setPushEnabled(false);
+      setPushMessage("Push notifications were not enabled. You can try again later.");
+      return;
+    }
+
+    setPushEnabled(true);
+    setPushMessage(`Sample alert sent for ${location.name}.`);
+
+    new Notification("GiriRaksha safety alert", {
+      body: `${location.name} is currently assessed as ${location.riskLevel}. Check rainfall and terrain conditions before travel.`,
+      tag: `giri-raksha-${location.id}`,
+    });
+  };
 
   // Latest available rainfall observation
   const latestRecord =
@@ -89,6 +122,34 @@ export function LocationPanel({ location, analysis, onClose, className = "" }: L
           <p className="text-xs sm:text-sm text-[#202923] leading-relaxed">
             This category represents the area&apos;s assessed landslide susceptibility or risk, depending on the available terrain and rainfall data. Check current official advisories before making safety decisions.
           </p>
+        </div>
+
+        <div className="bg-[#F3F5F3] rounded-lg p-4 border border-[#E1E6E1] space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-[#202923] font-bold text-xs">
+              <Bell className="w-4 h-4 text-[#247343]" />
+              <span>Alerts &amp; Push</span>
+            </div>
+            <button
+              type="button"
+              onClick={handleTogglePushNotifications}
+              className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide transition-colors ${
+                pushEnabled
+                  ? "bg-[#247343] text-white"
+                  : "bg-white text-[#247343] border border-[#247343] hover:bg-[#EAF7EE]"
+              }`}
+            >
+              {pushEnabled ? "Enabled" : "Enable push"}
+            </button>
+          </div>
+          <p className="text-[11px] text-[#526056] leading-relaxed">
+            Receive a sample browser alert when this area is flagged for elevated rainfall and slope risk.
+          </p>
+          {pushMessage && (
+            <div className="rounded border border-[#E1E6E1] bg-white px-2.5 py-2 text-[10px] text-[#202923]">
+              {pushMessage}
+            </div>
+          )}
         </div>
 
         {/* 2. Water inflow summary across all backend rainfall windows */}

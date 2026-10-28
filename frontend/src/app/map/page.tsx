@@ -9,6 +9,7 @@ import {
   getModelLocation,
   getModelLocations,
   ModelAnalysis,
+  normalizeLocationCoordinates,
   toLocationData,
 } from "@/lib/model";
 import { MapControls } from "@/components/map/MapControls";
@@ -91,13 +92,18 @@ function MapPageContent() {
     const districtName =
       place.address?.state_district || place.address?.county || "Kerala Western Ghats";
 
+    const safeCoordinates = normalizeLocationCoordinates(
+      { name: placeName, district: districtName, lat, lon },
+      [10.85, 76.24]
+    );
+
     const dynamicOsmLocation: LocationData = {
       id: `osm-${place.osm_id}`,
       name: placeName,
       panchayat: place.address?.village || place.address?.town || placeName,
       district: districtName,
       state: "Kerala",
-      coordinates: [lat, lon],
+      coordinates: safeCoordinates,
       riskScore: 0.76,
       riskLevel: "HIGH",
       susceptibilityScore: 0.74,
